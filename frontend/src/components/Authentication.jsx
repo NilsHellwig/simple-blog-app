@@ -1,9 +1,31 @@
-function Authentication(loginMode) {
+import { useState } from "react";
+import { handleSubmit } from "../api";
+
+function Authentication({ setLoggedInUser }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [loginMode, setLoginMode] = useState(true);
+
+  const switchLoginMode = () => {
+    loginMode ? setLoginMode(false) : setLoginMode(true);
+  };
+
   return (
-    <form id="login-form">
-      <div id="login-form-switch">Switch to {loginMode ? "registration" : "login"}</div>
-      <input type="text" placeholder="Username" required />
-      <input type="password" placeholder="Password" required />
+    <form
+      id="login-form"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(e, loginMode, setLoggedInUser, username, password, fullName);
+      }}
+    >
+      <div id="login-form-switch" onClick={switchLoginMode}>
+        Switch to {loginMode ? "Registration" : "Login"}
+      </div>
+
+      {!loginMode && <input type="text" placeholder="Full Name" required value={fullName} onChange={(e) => setFullName(e.target.value)} />}
+      <input type="text" placeholder="Username" required value={username} onChange={(e) => setUsername(e.target.value)} />
+      <input type="password" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
       <button type="submit">{loginMode ? "Login" : "Register"}</button>
     </form>
   );

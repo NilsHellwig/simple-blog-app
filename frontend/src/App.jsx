@@ -1,45 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./index.css";
 import { TrashIcon } from "@phosphor-icons/react";
 import Header from "./components/Header";
 import NewPostForm from "./components/NewPostForm";
 import Posts from "./components/Posts";
+import Authentication from "./components/Authentication";
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState({
-    username: "john_doe",
-    name: "John Doe",
-    email: "john_doe@mail.com",
-  });
+  const [loggedInUser, setLoggedInUser] = useState(undefined);
+  const [posts, setPosts] = useState([]);
 
-  // const [loggedInUser, setLoggedInUser] = useState(undefined);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      title: "First Post",
-      description: "This is the first post on your blog.",
-      imageUrl: "https://placehold.co/700x600",
-      author: {
-        username: "john_doe",
-        name: "John Doe",
-      },
-      postedAt: 1749891958,
-    },
-    {
-      id: 2,
-      title: "Second Post",
-      description: "This is the second post on your blog.",
-      imageUrl: "https://placehold.co/600x600",
-      author: {
-        username: "jane_doe",
-        name: "Jane Doe",
-      },
-      postedAt: 1749891958,
-    },
-  ]);
+    if (token) {
+      try {
+        const base64Payload = token.split(".")[1];
+        const payload = JSON.parse(atob(base64Payload));
 
-  const [loginMode, setLoginMode] = useState(true);
+        setLoggedInUser({
+          id: payload.id,
+          username: payload.username,
+          name: payload.name,
+        });
+      } catch (err) {
+        console.error("Ungültiges Token:", err);
+        localStorage.removeItem("token");
+      }
+    }
+  }, []);
 
   return (
     <div id="app-content">
@@ -55,6 +44,7 @@ function App() {
         <main>
           <h2>Welcome to Blogspace</h2>
           <p>Please log in to view and create posts.</p>
+          <Authentication setLoggedInUser={setLoggedInUser} />
         </main>
       )}
     </div>
