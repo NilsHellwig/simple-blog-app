@@ -6,11 +6,11 @@ import cors from "cors";
 import "dotenv/config";
 
 const secretKey = process.env.SECRET_KEY || "SECRET_KEY";
-const frontendPort = process.env.FRONTEND_PORT || 5173; 
+const frontendPort = process.env.FRONTEND_PORT || 5173;
 const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/blogapp";
 const port = process.env.PORT || 3000;
 
-// MongoDB-Models
+// === Models / Schema ===
 const userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
   name: String,
@@ -45,7 +45,7 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-// App setup
+// === App Setup ===
 const app = express();
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
