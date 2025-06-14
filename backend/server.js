@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import "dotenv/config";
-import { postSchema, userSchema } from "./schema";
+import { postSchema, userSchema } from "./schema.js";
 
 const secretKey = process.env.SECRET_KEY || "SECRET_KEY";
 const frontendPort = process.env.FRONTEND_PORT || 5173;
