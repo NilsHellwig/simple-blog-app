@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  mongo:
+    image: mongo:8
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/deineDatenbank
+      - FRONTEND_PORT=8000
+      - PORT=3000
+      - SECRET_KEY=MY_SECRET_KEY
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8000:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:

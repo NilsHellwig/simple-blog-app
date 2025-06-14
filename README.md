@@ -26,5 +26,5 @@ docker run -d --name mongodb -p 27017:27017 mongo
 
 ```bash
 npm init -y
-npm install express mongoose bcryptjs jsonwebtoken cors
+npm install express mongoose bcryptjs jsonwebtoken cors dotenv
 ```

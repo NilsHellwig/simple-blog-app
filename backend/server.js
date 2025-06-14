@@ -3,6 +3,12 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cors from "cors";
+import "dotenv/config";
+
+const secretKey = process.env.SECRET_KEY || "SECRET_KEY";
+const frontendPort = process.env.FRONTEND_PORT || 5173; 
+const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/blogapp";
+const port = process.env.PORT || 3000;
 
 // MongoDB-Models
 const userSchema = new mongoose.Schema({
@@ -31,7 +37,7 @@ const verifyToken = (req, res, next) => {
 
   const token = authHeader.split(" ")[1];
   try {
-    const decoded = jwt.verify(token, "SECRET_KEY");
+    const decoded = jwt.verify(token, secretKey);
     req.user = decoded;
     next();
   } catch (err) {
@@ -43,7 +49,7 @@ const verifyToken = (req, res, next) => {
 const app = express();
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: `http://localhost:${frontendPort}` }));
 app.use(express.json());
 
 // === AUTH ===
@@ -67,7 +73,7 @@ app.post("/login", async (req, res) => {
     return res.status(401).json({ error: "Falsche Zugangsdaten" });
   }
 
-  const token = jwt.sign({ username: user.username, name: user.name }, "SECRET_KEY", { expiresIn: "3h" });
+  const token = jwt.sign({ username: user.username, name: user.name }, secretKey, { expiresIn: "3h" });
 
   res.json({
     token,
@@ -122,9 +128,9 @@ app.delete("/posts/:id", verifyToken, async (req, res) => {
 
 // === SERVER START ===
 mongoose
-  .connect("mongodb://localhost:27017/blogapp")
+  .connect(mongoUri)
   .then(() => {
     console.log("MongoDB verbunden");
-    app.listen(3000, () => console.log("Server läuft auf http://localhost:3000"));
+    app.listen(port, () => console.log("Server läuft auf http://localhost:3000"));
   })
   .catch((err) => console.error("Fehler bei MongoDB-Verbindung:", err));

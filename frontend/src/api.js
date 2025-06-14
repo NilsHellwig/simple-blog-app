@@ -82,7 +82,6 @@ export const loadPosts = async (setPosts) => {
     .catch((err) => console.error("Fehler beim Laden der Posts:", err));
 };
 
-// api.js
 export async function deletePost(id, setPosts) {
   const token = localStorage.getItem("token");
   try {
