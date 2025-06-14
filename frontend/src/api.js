@@ -23,9 +23,8 @@ export const handleSubmit = async (e, loginMode, setLoggedInUser, username, pass
 
     localStorage.setItem("token", data.token);
     setLoggedInUser(data.user);
-
   } catch (err) {
-    alert("Server error");
+    console.error("Server error:", err);
   }
 };
 
