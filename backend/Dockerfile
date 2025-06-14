@@ -1,20 +1,20 @@
-# Verwende das offizielle Node.js LTS Image
+# Use the official Node.js LTS image
 FROM node:23-alpine
 
-# Setze das Arbeitsverzeichnis im Container
+# Set the working directory in the container
 WORKDIR /app
 
-# Kopiere package.json und package-lock.json (falls vorhanden)
+# Copy package.json and package-lock.json (if available)
 COPY package*.json ./
 
-# Installiere Abhängigkeiten
+# Install dependencies
 RUN npm install
 
-# Kopiere den Rest des Backend-Quellcodes
+# Copy the rest of the backend source code
 COPY . .
 
-# Exponiere den Port, auf dem das Backend lauscht (anpassen falls nötig)
+# Expose the port on which the backend listens (adjust if necessary)
 EXPOSE 3000
 
-# Starte das Backend
+# Start the backend
 CMD ["node", "server.js"]

@@ -6,10 +6,10 @@ import { loadPosts, deletePost } from "../api";
 function Posts({ setPosts, posts, loggedInUser }) {
   useEffect(() => {
     loadPosts(setPosts);
-  }, [setPosts]);
+  }, []);
 
   const handleDelete = (id) => {
-    if (window.confirm("Willst du diesen Beitrag wirklich löschen?")) {
+    if (window.confirm("Do you really want to delete this post?")) {
       deletePost(id, setPosts);
     }
   };
@@ -20,7 +20,7 @@ function Posts({ setPosts, posts, loggedInUser }) {
     <div id="posts">
       {posts.length === 0 ? (
         <div id="no-posts-hint">
-          <p>Keine Beiträge vorhanden.</p>
+          <p>No posts available.</p>
         </div>
       ) : (
         posts.map((post) => {
@@ -32,7 +32,7 @@ function Posts({ setPosts, posts, loggedInUser }) {
                   <div className="post-author-username gradient-text">@{post.author.username}</div>
                 </div>
                 {canDeletePost(post) && (
-                  <div className="post-delete-button" onClick={() => handleDelete(postId)}>
+                  <div className="post-delete-button" onClick={() => handleDelete(post._id)}>
                     <span>Delete</span>
                     <TrashIcon size={24} />
                   </div>

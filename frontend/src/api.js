@@ -17,19 +17,15 @@ export const handleSubmit = async (e, loginMode, setLoggedInUser, username, pass
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.error || "Ein Fehler ist aufgetreten");
+      alert(data.error || "An error occurred");
       return;
     }
 
-    if (loginMode) {
-      localStorage.setItem("token", data.token);
-      setLoggedInUser(data.user);
-    } else {
-      alert("Registrierung erfolgreich. Jetzt einloggen!");
-    }
+    localStorage.setItem("token", data.token);
+    setLoggedInUser(data.user);
+
   } catch (err) {
-    console.error(err);
-    alert("Serverfehler");
+    alert("Server error");
   }
 };
 
@@ -80,7 +76,7 @@ export const loadPosts = async (setPosts) => {
   })
     .then((res) => res.json())
     .then((data) => setPosts(data))
-    .catch((err) => console.error("Fehler beim Laden der Posts:", err));
+    .catch((err) => console.error("Error loading posts:", err));
 };
 
 export async function deletePost(id, setPosts) {
@@ -93,12 +89,12 @@ export async function deletePost(id, setPosts) {
       },
     });
 
-    if (!res.ok) throw new Error("Löschen fehlgeschlagen");
+    if (!res.ok) throw new Error("Delete failed");
 
-    // Neue Liste vom Server holen
+    // Get updated list from server
     const updatedPosts = await res.json();
     setPosts(updatedPosts);
   } catch (err) {
-    console.error("Fehler beim Löschen des Beitrags:", err);
+    console.error("Error deleting post:", err);
   }
 }

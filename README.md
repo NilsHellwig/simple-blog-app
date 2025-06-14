@@ -50,7 +50,7 @@ Start MongoDB container:
 docker run -d --name mongodb -p 27017:27017 mongo
 ```
 
-Info: Um Container, Netzwerke und Volumes zu entfernen, musst du `docker-compose down -v` ausführen.
+Info: To remove containers, networks and volumes, run `docker-compose down -v`.
 
 ### Project Initialization
 
@@ -75,8 +75,8 @@ Info: Um Container, Netzwerke und Volumes zu entfernen, musst du `docker-compose
 - **Authentication:** JWT, bcryptjs
 - **Containerization:** Docker
 
-
 ## TODO:
 
-* min #char username and password
-* datenbank init beispiel
+- min #char username and password
+- database initialization example
+

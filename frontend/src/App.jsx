@@ -17,10 +17,9 @@ function App() {
         const base64Payload = token.split(".")[1];
         const payload = JSON.parse(atob(base64Payload));
 
-        const isExpired = payload.exp && Date.now() >= payload.exp * 1000;
+        const isExpired = Date.now() >= payload.exp * 1000;
 
         if (isExpired) {
-          console.warn("Token ist abgelaufen.");
           localStorage.removeItem("token");
           return;
         }
@@ -31,7 +30,6 @@ function App() {
           name: payload.name,
         });
       } catch (err) {
-        console.error("Ungültiges Token:", err);
         localStorage.removeItem("token");
       }
     }

@@ -1,32 +1,32 @@
-# 1. Schritt: Node-Image als Build-Umgebung
+# Step 1: Node image as build environment
 FROM node:23-alpine AS build
 
-# Arbeitsverzeichnis im Container
+# Working directory in container
 WORKDIR /app
 
-# package.json und package-lock.json kopieren (für schnelleren Cache)
+# Copy package.json and package-lock.json (for faster cache)
 COPY package*.json ./
 
-# Abhängigkeiten installieren
+# Install dependencies
 RUN npm install
 
-# Quellcode kopieren
+# Copy source code
 COPY . .
 
-# React App mit Vite builden
+# Build React app with Vite
 RUN npm run build
 
-# 2. Schritt: Nginx als Webserver für die gebaute App
+# Step 2: Nginx as web server for the built app
 FROM nginx:1.27.5-alpine
 
-# Standard-Nginx-Konfiguration entfernen
+# Remove default Nginx configuration
 RUN rm -rf /usr/share/nginx/html/*
 
-# Gebauten Vite-Output aus dem Build-Stage kopieren
+# Copy built Vite output from build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Port 80 freigeben
+# Expose port 80
 EXPOSE 80
 
-# Nginx starten
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

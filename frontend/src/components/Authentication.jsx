@@ -24,9 +24,9 @@ function Authentication({ setLoggedInUser }) {
 
       {!loginMode && <input type="text" placeholder="Full Name" required value={fullName} onChange={(e) => setFullName(e.target.value)} />}
 
-      <input type="text" placeholder="Username" required value={username} onChange={(e) => setUsername(e.target.value)} />
+      <input type="text" placeholder="Username" required minLength="6" maxLength="30" value={username} onChange={(e) => setUsername(e.target.value)} />
 
-      <input type="password" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+      <input type="password" placeholder="Password" required minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} />
 
       <button type="submit">{loginMode ? "Login" : "Register"}</button>
     </form>
