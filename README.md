@@ -67,16 +67,3 @@ Info: To remove containers, networks and volumes, run `docker-compose down -v`.
    ```bash
    npm install express mongoose bcryptjs jsonwebtoken cors dotenv
    ```
-
-## 🛠️ Technologies Used
-
-- **Frontend:** React, Vite, Phosphor Icons
-- **Backend:** Node.js, Express, MongoDB
-- **Authentication:** JWT, bcryptjs
-- **Containerization:** Docker
-
-## TODO:
-
-- min #char username and password
-- database initialization example
-

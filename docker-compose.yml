@@ -29,5 +29,9 @@ services:
     environment:
       - VITE_API_URL=http://localhost:3000
 
+# Volumes section defines named volumes that can be shared between containers
+# and persist data beyond container lifecycle
 volumes:
+  # mongo-data: Persistent volume for MongoDB database files
+  # This ensures database data survives container restarts and removals
   mongo-data:
