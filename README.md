@@ -72,3 +72,8 @@ docker run -d --name mongodb -p 27017:27017 mongo
 - **Backend:** Node.js, Express, MongoDB
 - **Authentication:** JWT, bcryptjs
 - **Containerization:** Docker
+
+
+## TODO:
+
+* min #char username and password
