@@ -8,6 +8,16 @@ import { postSchema, userSchema } from "./schema.js";
 
 const secretKey = process.env.SECRET_KEY || "SECRET_KEY";
 const frontendPort = process.env.FRONTEND_PORT || 5173;
+
+/*
+| Part         | Meaning                                                                      |
+| ------------ | ---------------------------------------------------------------------------- |
+| `mongodb://` | Protocol schema – indicates that this is a MongoDB connection               |
+| `localhost`  | Hostname – the MongoDB server runs on the **local machine**                 |
+| `27017`      | Default port – MongoDB listens on port **27017** by default                 |
+| `blogapp`    | Database name – this is the **target database** you want to work with       |
+
+*/
 const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/blogapp";
 const port = process.env.PORT || 3000;
 
