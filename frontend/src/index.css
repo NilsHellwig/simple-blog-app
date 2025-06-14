@@ -198,6 +198,7 @@ button[type="submit"]:hover {
 
 .post-author-username {
     font-style: italic;
+    width: max-content;
 }
 
 .post-timestamp {
