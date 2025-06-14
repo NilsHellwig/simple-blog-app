@@ -32,13 +32,13 @@ function App() {
 
   return (
     <div id="app-content">
-      <Header loggedInUser={loggedInUser} />
+      <Header loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
       {loggedInUser ? (
         <main>
           <h2>Add Post</h2>
           <NewPostForm posts={posts} setPosts={setPosts} />
           <h2>Latest Posts</h2>
-          <Posts posts={posts} loggedInUser={loggedInUser} />
+          <Posts setPosts={setPosts} posts={posts} loggedInUser={loggedInUser} />
         </main>
       ) : (
         <main>

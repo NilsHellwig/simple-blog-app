@@ -41,6 +41,8 @@ const verifyToken = (req, res, next) => {
 
 // App setup
 const app = express();
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
@@ -81,7 +83,15 @@ app.get("/posts", async (req, res) => {
 
 app.post("/posts", verifyToken, async (req, res) => {
   const { title, description, imageUrl } = req.body;
-  const newPost = await Post.create({
+
+  // Regular expression to validate base64 PNG or JPG/JPEG images:
+  const base64Pattern = /^data:image\/(png|jpg|jpeg);base64,[A-Za-z0-9+/=]+$/;
+
+  if (!base64Pattern.test(imageUrl)) {
+    return res.status(400).json({ error: "Invalid image format. Only PNG and JPG base64 images are allowed." });
+  }
+
+  await Post.create({
     title,
     description,
     imageUrl,
@@ -91,17 +101,23 @@ app.post("/posts", verifyToken, async (req, res) => {
     },
     postedAt: Math.floor(Date.now() / 1000),
   });
-  res.status(201).json(newPost);
+
+  const allPosts = await Post.find().sort({ postedAt: -1 });
+  res.status(201).json(allPosts);
 });
 
 app.delete("/posts/:id", verifyToken, async (req, res) => {
   const post = await Post.findById(req.params.id);
   if (!post) return res.status(404).json({ error: "Nicht gefunden" });
 
-  if (post.author.username !== req.user.username) return res.status(403).json({ error: "Nicht erlaubt" });
+  if (post.author.username !== req.user.username) {
+    return res.status(403).json({ error: "Nicht erlaubt" });
+  }
 
-  await post.remove();
-  res.status(204).end();
+  await Post.deleteOne({ _id: post._id });
+
+  const allPosts = await Post.find().sort({ postedAt: -1 }); // optional sortiert
+  res.status(200).json(allPosts);
 });
 
 // === SERVER START ===

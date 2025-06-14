@@ -47,6 +47,7 @@ header {
     background-color: var(--lightest);
     justify-content: space-between;
     align-items: center;
+    z-index: 1000;
 }
 
 #logout-button {
