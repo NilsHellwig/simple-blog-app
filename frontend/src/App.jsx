@@ -1,35 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./index.css";
+import { TrashIcon } from "@phosphor-icons/react";
+import Header from "./components/Header";
+import NewPostForm from "./components/NewPostForm";
+import Posts from "./components/Posts";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [loggedInUser, setLoggedInUser] = useState({
+    username: "john_doe",
+    name: "John Doe",
+    email: "john_doe@mail.com",
+  });
+
+  // const [loggedInUser, setLoggedInUser] = useState(undefined);
+
+  const [posts, setPosts] = useState([
+    {
+      id: 1,
+      title: "First Post",
+      description: "This is the first post on your blog.",
+      imageUrl: "https://placehold.co/700x600",
+      author: {
+        username: "john_doe",
+        name: "John Doe",
+      },
+      postedAt: 1749891958,
+    },
+    {
+      id: 2,
+      title: "Second Post",
+      description: "This is the second post on your blog.",
+      imageUrl: "https://placehold.co/600x600",
+      author: {
+        username: "jane_doe",
+        name: "Jane Doe",
+      },
+      postedAt: 1749891958,
+    },
+  ]);
+
+  const [loginMode, setLoginMode] = useState(true);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div id="app-content">
+      <Header loggedInUser={loggedInUser} />
+      {loggedInUser ? (
+        <main>
+          <h2>Add Post</h2>
+          <NewPostForm posts={posts} setPosts={setPosts} />
+          <h2>Latest Posts</h2>
+          <Posts posts={posts} loggedInUser={loggedInUser} />
+        </main>
+      ) : (
+        <main>
+          <h2>Welcome to Blogspace</h2>
+          <p>Please log in to view and create posts.</p>
+        </main>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
