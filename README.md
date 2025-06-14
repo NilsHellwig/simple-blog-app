@@ -15,7 +15,7 @@ A modern, full-stack blog application built with React and Node.js.
 Start Docker on your system, then run:
 
 ```bash
-docker-compose up
+docker-compose up --build
 ```
 
 ## 🎨 Frontend Setup
@@ -50,6 +50,8 @@ Start MongoDB container:
 docker run -d --name mongodb -p 27017:27017 mongo
 ```
 
+Info: Um Container, Netzwerke und Volumes zu entfernen, musst du `docker-compose down -v` ausführen.
+
 ### Project Initialization
 
 1. **Initialize Node.js project:**
@@ -77,3 +79,4 @@ docker run -d --name mongodb -p 27017:27017 mongo
 ## TODO:
 
 * min #char username and password
+* datenbank init beispiel

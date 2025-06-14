@@ -33,7 +33,7 @@ export const handleSubmit = async (e, loginMode, setLoggedInUser, username, pass
   }
 };
 
-export const addNewPost = async (e, newPost, setPosts, setNewPost) => {
+export const addNewPost = async (e, newPost, setPosts, setNewPost, fileInputRef) => {
   e.preventDefault();
 
   if (!newPost.title || !newPost.description || !newPost.imageBase64) {
@@ -65,6 +65,7 @@ export const addNewPost = async (e, newPost, setPosts, setNewPost) => {
     const updatedPosts = await response.json();
     setPosts(updatedPosts);
     setNewPost({ title: "", description: "", imageBase64: "" });
+    fileInputRef.current.value = "";
   } catch (err) {
     alert("Error: " + err.message);
   }

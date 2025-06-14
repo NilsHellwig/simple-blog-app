@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./index.css";
-import { TrashIcon } from "@phosphor-icons/react";
 import Header from "./components/Header";
 import NewPostForm from "./components/NewPostForm";
 import Posts from "./components/Posts";
@@ -17,6 +16,14 @@ function App() {
       try {
         const base64Payload = token.split(".")[1];
         const payload = JSON.parse(atob(base64Payload));
+
+        const isExpired = payload.exp && Date.now() >= payload.exp * 1000;
+
+        if (isExpired) {
+          console.warn("Token ist abgelaufen.");
+          localStorage.removeItem("token");
+          return;
+        }
 
         setLoggedInUser({
           id: payload.id,

@@ -8,24 +8,26 @@ function Authentication({ setLoggedInUser }) {
   const [loginMode, setLoginMode] = useState(true);
 
   const switchLoginMode = () => {
-    loginMode ? setLoginMode(false) : setLoginMode(true);
+    setLoginMode(!loginMode);
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    handleSubmit(e, loginMode, setLoggedInUser, username, password, fullName);
   };
 
   return (
-    <form
-      id="login-form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(e, loginMode, setLoggedInUser, username, password, fullName);
-      }}
-    >
+    <form id="login-form" onSubmit={onSubmit}>
       <div id="login-form-switch" onClick={switchLoginMode}>
         Switch to {loginMode ? "Registration" : "Login"}
       </div>
 
       {!loginMode && <input type="text" placeholder="Full Name" required value={fullName} onChange={(e) => setFullName(e.target.value)} />}
+
       <input type="text" placeholder="Username" required value={username} onChange={(e) => setUsername(e.target.value)} />
+
       <input type="password" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+
       <button type="submit">{loginMode ? "Login" : "Register"}</button>
     </form>
   );

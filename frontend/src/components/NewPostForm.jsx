@@ -1,20 +1,25 @@
 import { PlusIcon } from "@phosphor-icons/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { addNewPost } from "../api";
 
 function NewPostForm({ posts, setPosts }) {
+  const fileInputRef = useRef();
   const [newPost, setNewPost] = useState({
     title: "",
     description: "",
     imageBase64: "",
   });
 
+  const updateNewPost = (key, value) => {
+    setNewPost({ ...newPost, [key]: value });
+  };
+
   const uploadImage = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setNewPost({ ...newPost, imageBase64: reader.result });
+        updateNewPost("imageBase64", reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -24,12 +29,12 @@ function NewPostForm({ posts, setPosts }) {
     <form
       id="add-post-form"
       onSubmit={(e) => {
-        addNewPost(e, newPost, setPosts, setNewPost);
+        addNewPost(e, newPost, setPosts, setNewPost, fileInputRef);
       }}
     >
-      <input type="text" placeholder="Title" value={newPost.title} onChange={(e) => setNewPost({ ...newPost, title: e.target.value })} required />
-      <textarea placeholder="Description" value={newPost.description} onChange={(e) => setNewPost({ ...newPost, description: e.target.value })} required />
-      <input id="add-post-form-image" type="file" accept="image/jpeg,image/png" onChange={uploadImage} required />
+      <input type="text" placeholder="Title" value={newPost.title} onChange={(e) => updateNewPost("title", e.target.value)} required />
+      <textarea placeholder="Description" value={newPost.description} onChange={(e) => updateNewPost("description", e.target.value)} required />
+      <input ref={fileInputRef} id="add-post-form-image" type="file" accept="image/jpeg,image/png" onChange={uploadImage} required />
       <button type="submit">
         <span>Add Post</span>
         <PlusIcon size={24} />
