@@ -65,5 +65,5 @@ Info: To remove containers, networks and volumes, run `docker-compose down -v`.
 
 3. **Install dependencies:**
    ```bash
-   npm install express mongoose bcryptjs jsonwebtoken cors dotenv
+   npm install express mongoose bcryptjs jsonwebtoken cors dotenv uuid
    ```

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { TrashIcon } from "@phosphor-icons/react";
 import { convertUnixToTimestamp } from "../helper";
 import { loadPosts, deletePost } from "../api";
+import { BACKEND_URL } from "../const";
 
 function Posts({ setPosts, posts, loggedInUser }) {
   useEffect(() => {
@@ -38,7 +39,7 @@ function Posts({ setPosts, posts, loggedInUser }) {
                   </div>
                 )}
               </div>
-              <img className="post-image" src={post.imageUrl} alt="Post Thumbnail" />
+              <img className="post-image"  src={`${BACKEND_URL}/images/${post.imageUrl}.png`} alt="Post Thumbnail"  />
               <div className="post-footer">
                 <h3 className="post-title">{post.title}</h3>
                 <span className="post-timestamp">({convertUnixToTimestamp(post.postedAt)})</span>

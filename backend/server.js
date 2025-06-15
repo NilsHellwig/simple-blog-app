@@ -4,6 +4,10 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import "dotenv/config";
+import fs from "fs";
+import path from "path";
+import { v4 as uuidv4 } from "uuid";
+
 import { postSchema, userSchema } from "./schema.js";
 
 const secretKey = process.env.SECRET_KEY || "SECRET_KEY";
@@ -46,6 +50,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cors({ origin: `http://localhost:${frontendPort}` }));
 app.use(express.json());
+app.use("/images", express.static("/mongo_img"));
 
 // === AUTH ===
 app.post("/register", async (req, res) => {
@@ -94,16 +99,30 @@ app.get("/posts", async (req, res) => {
 app.post("/posts", verifyToken, async (req, res) => {
   const { title, description, imageUrl } = req.body;
 
-  const base64Pattern = /^data:image\/(png|jpg|jpeg);base64,[A-Za-z0-9+/=]+$/;
+  const base64Pattern = /^data:image\/(png|jpg|jpeg);base64,([A-Za-z0-9+/=]+)$/;
+  const match = imageUrl.match(base64Pattern);
 
-  if (!base64Pattern.test(imageUrl)) {
+  if (!match) {
     return res.status(400).json({ error: "Invalid image format. Only PNG and JPG base64 images are allowed." });
+  }
+
+  const extension = match[1] === "jpeg" ? "jpg" : match[1];
+  const base64Data = match[2];
+  const uuid = uuidv4();
+  const filename = `${uuid}.${extension}`;
+  const imagePath = path.join("/mongo_img", filename); // In Container
+  const imageBuffer = Buffer.from(base64Data, "base64");
+
+  try {
+    fs.writeFileSync(imagePath, imageBuffer);
+  } catch (err) {
+    return res.status(500).json({ error: "Failed to save image." });
   }
 
   await Post.create({
     title,
     description,
-    imageUrl,
+    imageUrl: uuid, // nur UUID in DB
     author: {
       username: req.user.username,
       name: req.user.name,

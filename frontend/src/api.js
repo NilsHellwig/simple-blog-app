@@ -1,9 +1,9 @@
-import { FRONTEND_URL } from "./const";
+import { BACKEND_URL } from "./const";
 
 export const handleSubmit = async (e, loginMode, setLoggedInUser, username, password, fullName) => {
   e.preventDefault();
 
-  const url = `${FRONTEND_URL}/${loginMode ? "login" : "register"}`;
+  const url = `${BACKEND_URL}/${loginMode ? "login" : "register"}`;
 
   const body = loginMode ? { username, password } : { username, password, name: fullName };
 
@@ -39,7 +39,7 @@ export const addNewPost = async (e, newPost, setPosts, setNewPost, fileInputRef)
   try {
     const token = localStorage.getItem("token");
 
-    const response = await fetch(`${FRONTEND_URL}/posts`, {
+    const response = await fetch(`${BACKEND_URL}/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export const addNewPost = async (e, newPost, setPosts, setNewPost, fileInputRef)
 
 export const loadPosts = async (setPosts) => {
   const token = localStorage.getItem("token");
-  fetch(`${FRONTEND_URL}/posts`, {
+  fetch(`${BACKEND_URL}/posts`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -81,7 +81,7 @@ export const loadPosts = async (setPosts) => {
 export async function deletePost(id, setPosts) {
   const token = localStorage.getItem("token");
   try {
-    const res = await fetch(`${FRONTEND_URL}/posts/${id}`, {
+    const res = await fetch(`${BACKEND_URL}/posts/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

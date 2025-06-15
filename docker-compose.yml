@@ -7,6 +7,7 @@ services:
       - "27017:27017"
     volumes:
       - ./mongo-init:/docker-entrypoint-initdb.d
+      - ./mongo_img:/mongo_img 
 
   backend:
     build: ./backend
@@ -19,6 +20,8 @@ services:
       - SECRET_KEY=MY_SECRET_KEY
     depends_on:
       - mongo
+    volumes:
+      - ./mongo_img:/mongo_img 
 
   frontend:
     build: ./frontend
