@@ -1,4 +1,4 @@
-import { PlusIcon } from "@phosphor-icons/react";
+import { ChatCircleIcon } from "@phosphor-icons/react";
 import { useRef, useState } from "react";
 import { addNewPost } from "../api";
 
@@ -37,7 +37,7 @@ function NewPostForm({ posts, setPosts }) {
       <input ref={fileInputRef} id="add-post-form-image" type="file" accept="image/jpeg,image/png" onChange={uploadImage} required />
       <button type="submit">
         <span>Add Post</span>
-        <PlusIcon size={24} />
+        <ChatCircleIcon size={24} />
       </button>
     </form>
   );
