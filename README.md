@@ -8,37 +8,29 @@ A modern, full-stack blog application built with React and Node.js.
 - Node.js (v16 or higher)
 - npm or yarn package manager
 
-## ⚡ Quick Start
+## Schritte
 
-### 1. Launch the Application
+1. Erstelle einen Ordner `frontend` und einen Ordner `backend` im Projektverzeichnis.
+2. **Frontend Setup:**
 
-Start Docker on your system, then run:
+   - Install Vite and create a React app:
+     ```bash
+     cd frontend # Wechsle in den frontend Ordner
+     npm create vite@latest . -- --template react # Erstelle eine neue Vite React App
+     npm install
+     npm run dev # Entwicklungsserver starten
+     ```
+   - Remove styles from `index.css`
+   - Delete `App.css`
+   - Remove `vite.svg`
+   - JSX files aufräumen
+   - Dateien erstellen: `Authentication.jsx`, `Header.jsx`, `NewPostForm.jsx`, `Posts.jsx`
+   - Install icon dependencies:\*\*
 
 ```bash
-docker-compose up --build
+npm install @phosphor-icons/react
+npm install @phosphor-icons/unplugin vite
 ```
-
-## 🎨 Frontend Setup
-
-### Initial Configuration
-
-1. **Clean up default files:**
-
-   - Remove unnecessary styles from `index.css`
-   - Delete `App.css`
-   - Remove `react.svg` and `vite.svg`
-
-2. **Configure App.jsx:**
-
-   - Clear default HTML content
-   - Remove unused JSX and imports
-   - Link to `index.css`
-
-3. **Install icon dependencies:**
-   ```bash
-   npm install @phosphor-icons/react
-   npm install @phosphor-icons/unplugin vite
-   ```
 
 ## 🔧 Backend Setup
 

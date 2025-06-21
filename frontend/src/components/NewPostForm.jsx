@@ -1,9 +1,7 @@
 import { ChatCircleIcon } from "@phosphor-icons/react";
-import { useRef, useState } from "react";
-import { addNewPost } from "../api";
+import { useState } from "react";
 
 function NewPostForm({ posts, setPosts }) {
-  const fileInputRef = useRef();
   const [newPost, setNewPost] = useState({
     title: "",
     description: "",
@@ -29,7 +27,7 @@ function NewPostForm({ posts, setPosts }) {
     <form
       id="add-post-form"
       onSubmit={(e) => {
-        addNewPost(e, newPost, setPosts, setNewPost, fileInputRef);
+        
       }}
     >
       <input type="text" placeholder="Title" value={newPost.title} onChange={(e) => updateNewPost("title", e.target.value)} required />

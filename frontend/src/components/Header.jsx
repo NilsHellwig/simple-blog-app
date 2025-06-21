@@ -2,8 +2,7 @@ import { CameraIcon, SignOutIcon } from "@phosphor-icons/react";
 
 function Header({ loggedInUser, setLoggedInUser }) {
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setLoggedInUser(undefined);
+
   };
 
   return (
