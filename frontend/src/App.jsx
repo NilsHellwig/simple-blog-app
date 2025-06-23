@@ -6,9 +6,26 @@ import Posts from "./components/Posts";
 import Authentication from "./components/Authentication";
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState(undefined);
-  const [posts, setPosts] = useState([]);
+  const loggedInUserDummy = {
+    username: "john_doe",
+    name: "John Doe",
+  };
 
+  const postsDummy = [
+    {
+      _id: "1",
+      title: "First Post",
+      description: "This is the first post.",
+      imageUrl: "post1",
+      author: {
+        username: "john_doe",
+        name: "John Doe",
+      }
+    },
+  ];
+
+  const [loggedInUser, setLoggedInUser] = useState(loggedInUserDummy);
+  const [posts, setPosts] = useState(postsDummy);
 
   return (
     <div id="app-content">

@@ -32,7 +32,7 @@ function NewPostForm({ posts, setPosts }) {
     >
       <input type="text" placeholder="Title" value={newPost.title} onChange={(e) => updateNewPost("title", e.target.value)} required />
       <textarea placeholder="Description" value={newPost.description} onChange={(e) => updateNewPost("description", e.target.value)} required />
-      <input ref={fileInputRef} id="add-post-form-image" type="file" accept="image/jpeg,image/png" onChange={uploadImage} required />
+      <input id="add-post-form-image" type="file" accept="image/jpeg,image/png" onChange={uploadImage} required />
       <button type="submit">
         <span>Add Post</span>
         <ChatCircleIcon size={24} />
