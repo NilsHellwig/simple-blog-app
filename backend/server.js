@@ -7,6 +7,7 @@ import "dotenv/config";
 import fs from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
+import sharp from "sharp";
 
 import { postSchema, userSchema } from "./schema.js";
 
@@ -106,15 +107,17 @@ app.post("/posts", verifyToken, async (req, res) => {
     return res.status(400).json({ error: "Invalid image format. Only PNG and JPG base64 images are allowed." });
   }
 
-  const extension = match[1] === "jpeg" ? "jpg" : match[1];
   const base64Data = match[2];
   const uuid = uuidv4();
-  const filename = `${uuid}.${extension}`;
+  const filename = `${uuid}.png`; // Always save as .png
   const imagePath = path.join("/mongo_img", filename); // In Container
   const imageBuffer = Buffer.from(base64Data, "base64");
 
   try {
-    fs.writeFileSync(imagePath, imageBuffer);
+    // Convert to PNG using sharp and save
+    await sharp(imageBuffer)
+      .png()
+      .toFile(imagePath);
   } catch (err) {
     return res.status(500).json({ error: "Failed to save image." });
   }
