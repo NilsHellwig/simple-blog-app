@@ -1,24 +1,5 @@
-import { CameraIcon, SignOutIcon } from "@phosphor-icons/react";
-
-function Header({ loggedInUser, setLoggedInUser }) {
-  const handleLogout = () => {
-
-  };
-
-  return (
-    <header>
-      <div id="logo">
-        <CameraIcon size={32} weight="duotone" />
-        <h1>Blogspace</h1>
-      </div>
-      {loggedInUser && (
-        <div id="logout-button" onClick={handleLogout}>
-          <span>Logout {loggedInUser.name}</span>
-          <SignOutIcon size={24} />
-        </div>
-      )}
-    </header>
-  );
+function Header() {
+    return <div></div>
 }
 
-export default Header;
+export default Header
