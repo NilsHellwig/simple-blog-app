@@ -1,0 +1,218 @@
+/* CSS Custom Properties */
+body {
+    --lightest: #FAF9F5;
+    --light: #F0EEE6;
+    --gray: #D9D8D4;
+    --dark: #3C3C39;
+    --brick: #D47455;
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    background-color: var(--lightest);
+    color: var(--dark);
+}
+
+/* Layout Components */
+#app-content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: solid 1px var(--gray);
+    background-color: var(--lightest);
+    z-index: 1000;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 8px;
+}
+
+/* Logo and Branding */
+#logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+#app-description {
+    font-size: 18px;
+    color: gray;
+}
+
+.gradient-text {
+    background-image: linear-gradient(to right, red, orange);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Form Elements */
+input,
+textarea {
+    all: unset;
+    background-color: var(--lightest);
+    padding: 10px;
+    border: solid 1px var(--light);
+    border-radius: 6px;
+}
+
+#add-post-form,
+#login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: white;
+    border: solid 1px var(--light);
+    box-shadow: 2px -3px 7px rgba(0, 0, 0, 0.015);
+}
+
+/* Buttons */
+button[type="submit"] {
+    all: unset;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: max-content;
+    align-self: flex-end;
+    background-color: var(--light);
+    color: var(--brick);
+    text-align: center;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+button[type="submit"]:hover {
+    scale: 1.05;
+    background-color: var(--brick);
+    color: white;
+}
+
+#logout-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: solid 1px var(--light);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+#logout-button:hover {
+    background-color: var(--light);
+    scale: 1.05;
+}
+
+#login-form-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: max-content;
+    align-self: flex-end;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: var(--brick);
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+#login-form-switch:hover {
+    background-color: var(--lightest);
+    scale: 1.05;
+}
+
+.post-delete-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: solid 1px var(--brick);
+    color: var(--brick);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.post-delete-button:hover {
+    background-color: var(--brick);
+    color: white;
+    scale: 1.05;
+}
+
+/* Posts */
+
+#no-posts-hint {
+    color: var(--dark);
+}
+
+#posts {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: white;
+    border: solid 1px var(--light);
+    box-shadow: 2px -3px 7px rgba(0, 0, 0, 0.015);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-author {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.post-author-name {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.post-author-username {
+    font-style: italic;
+    width: max-content;
+}
+
+.post-timestamp {
+    font-size: 14px;
+    color: gray;
+}
+
+.post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+h3 {
+    font-size: 24px;
+    margin: 0;
+}
