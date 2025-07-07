@@ -1,4 +1,6 @@
 import { TrashIcon } from "@phosphor-icons/react";
+import { convertUnixToTimestamp } from "../helper";
+import { loadPosts, deletePost } from "../api";
 import { BACKEND_URL } from "../const";
 
 function Posts() {
