@@ -24,7 +24,7 @@ function App() {
     },
   ];
 
-  const [loggedInUser, setLoggedInUser] = useState(loggedInUserDummy);
+  const [loggedInUser, setLoggedInUser] = useState(undefined);
   const [posts, setPosts] = useState(postsDummy);
 
   return (

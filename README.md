@@ -19,3 +19,13 @@
 npm install @phosphor-icons/react
 npm install @phosphor-icons/unplugin vite
 ```
+
+3. **Backend Setup:**
+
+   - Install Express and create a basic server:
+     ```bash
+     cd backend # Wechsle in den backend Ordner
+     npm init -y # Initialisiere ein neues Node.js Projekt
+     npm install express cors dotenv mongoose bcryptjs jsonwebtoken uuid sharp # Installiere benötigte Pakete
+     ```
+   - `docker run -d --name mongodb -p 27017:27017 mongo:8` # Starte MongoDB Container
