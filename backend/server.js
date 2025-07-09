@@ -17,7 +17,7 @@ const frontendPort = process.env.FRONTEND_PORT || 5173;
 /*
 | Part         | Meaning                                                                      |
 | ------------ | ---------------------------------------------------------------------------- |
-| `mongodb://` | Protocol schema – indicates that this is a MongoDB connection               |
+| `mongodb://` | Protocol schema (ähnlich wie http, https) – indicates that this is a MongoDB connection               |
 | `localhost`  | Hostname – the MongoDB server runs on the **local machine**                 |
 | `27017`      | Default port – MongoDB listens on port **27017** by default                 |
 | `blogapp`    | Database name – this is the **target database** you want to work with       |
@@ -30,7 +30,22 @@ const port = process.env.PORT || 3000;
 const User = mongoose.model("User", userSchema);
 const Post = mongoose.model("Post", postSchema);
 
+// === App Setup ===
+const app = express();
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(cors({ origin: `http://localhost:${frontendPort}` }));
+app.use(express.json());
+app.use("/images", express.static("/mongo_img"));
+
 // Middleware for JWT
+
+// 🔷 Alternative Schemas im Authorization-Header
+// Schema	Beispiel	Bedeutung
+// Basic	Basic dXNlcjpwYXNzd29yZA==	Base64-encoded username:password.
+// Bearer	Bearer eyJhbGciOiJIUzI1NiIs...	Ein Token, wer es hat, ist authentifiziert.
+// Digest	Digest username="Mufasa", realm="...", ...	Komplexere Challenge-Response Authentifizierung.
+
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ error: "Token missing" });
@@ -44,14 +59,6 @@ const verifyToken = (req, res, next) => {
     res.status(401).json({ error: "Invalid token" });
   }
 };
-
-// === App Setup ===
-const app = express();
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
-app.use(cors({ origin: `http://localhost:${frontendPort}` }));
-app.use(express.json());
-app.use("/images", express.static("/mongo_img"));
 
 // === AUTH ===
 app.post("/register", async (req, res) => {
