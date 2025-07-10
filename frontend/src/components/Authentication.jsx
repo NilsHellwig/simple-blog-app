@@ -8,6 +8,7 @@ function Authentication({ setLoggedInUser }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    handleAuthentication(e, loginMode, setLoggedInUser, username, password, fullName);
   };
 
   const switchLoginMode = () => {
@@ -42,7 +43,7 @@ function Authentication({ setLoggedInUser }) {
         }}
       />
       <input
-        type="text"
+        type="password"
         placeholder="Password"
         required
         minLength={6}
