@@ -1,7 +1,9 @@
 import { ChatCircleIcon } from "@phosphor-icons/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { addNewPost } from "../api";
 
 function NewPostForm({ posts, setPosts }) {
+  const fileInputRef = useRef();
   const [newPost, setNewPost] = useState({
     title: "",
     description: "",
@@ -14,7 +16,6 @@ function NewPostForm({ posts, setPosts }) {
 
   const uploadImage = (e) => {
     const file = e.target.files[0];
-    console.log(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -25,10 +26,15 @@ function NewPostForm({ posts, setPosts }) {
   };
 
   return (
-    <form id="add-post-form" onSubmit={(e) => {}}>
+    <form
+      id="add-post-form"
+      onSubmit={(e) => {
+        addNewPost(e, newPost, setPosts, setNewPost, fileInputRef);
+      }}
+    >
       <input type="text" placeholder="Title" value={newPost.title} onChange={(e) => updateNewPost("title", e.target.value)} required />
-      <textarea placeholder="Write a description..." value={newPost.descripion} onChange={(e) => updateNewPost("description", e.target.value)} required />
-      <input id="add-post-form-image" type="file" accept="image/jpeg,image/png" onChange={uploadImage} />
+      <textarea placeholder="Description" value={newPost.description} onChange={(e) => updateNewPost("description", e.target.value)} required />
+      <input ref={fileInputRef} id="add-post-form-image" type="file" accept="image/jpeg,image/png" onChange={uploadImage} required />
       <button type="submit">
         <span>Add Post</span>
         <ChatCircleIcon size={24} />

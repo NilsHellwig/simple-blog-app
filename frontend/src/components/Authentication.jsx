@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { handleAuthentication } from "../api";
 
 function Authentication({ setLoggedInUser }) {
   const [username, setUsername] = useState("");

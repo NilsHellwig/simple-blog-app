@@ -2,6 +2,7 @@ import { TrashIcon } from "@phosphor-icons/react";
 import { BACKEND_URL } from "../const";
 import { convertUnixToTimestamp } from "../helper";
 import { useEffect } from "react";
+import { loadPosts } from "../api";
 
 function Posts({posts, setPosts, loggedInUser}) {
   useEffect(() => {
