@@ -13,10 +13,10 @@ function Header({ loggedInUser, setLoggedInUser }) {
         <h1>Blogspace</h1>
       </div>
       {loggedInUser && (
-        <div id="logout-button" onClick={handleLogout}>
+        <button id="logout-button" type="button" onClick={handleLogout}>
           <span>Logout {loggedInUser.name}</span>
           <SignOutIcon size={24} />
-        </div>
+        </button>
       )}
     </header>
   );

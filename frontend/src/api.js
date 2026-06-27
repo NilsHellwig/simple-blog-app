@@ -1,10 +1,7 @@
 import { BACKEND_URL } from "./const";
 
-export const handleSubmit = async (e, loginMode, setLoggedInUser, username, password, fullName) => {
-  e.preventDefault();
-
+export const handleSubmit = async (loginMode, setLoggedInUser, username, password, fullName) => {
   const url = `${BACKEND_URL}/${loginMode ? "login" : "register"}`;
-
   const body = loginMode ? { username, password } : { username, password, name: fullName };
 
   try {
@@ -68,32 +65,30 @@ export const addNewPost = async (e, newPost, setPosts, setNewPost, fileInputRef)
 
 export const loadPosts = async (setPosts) => {
   const token = localStorage.getItem("token");
-  fetch(`${BACKEND_URL}/posts`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => setPosts(data))
-    .catch((err) => console.error("Error loading posts:", err));
+  try {
+    const res = await fetch(`${BACKEND_URL}/posts`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    setPosts(data);
+  } catch (err) {
+    console.error("Error loading posts:", err);
+  }
 };
 
-export async function deletePost(id, setPosts) {
+export const deletePost = async (id, setPosts) => {
   const token = localStorage.getItem("token");
   try {
     const res = await fetch(`${BACKEND_URL}/posts/${id}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     if (!res.ok) throw new Error("Delete failed");
 
-    // Get updated list from server
     const updatedPosts = await res.json();
     setPosts(updatedPosts);
   } catch (err) {
     console.error("Error deleting post:", err);
   }
-}
+};

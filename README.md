@@ -1,69 +1,67 @@
-# 🚀 Simple Blog App (MERN-Stack)
+# MME: Full-Stack Blog Application
 
-A modern, full-stack blog application built with React and Node.js.
+Um wichtige Konzepte von React.js und Node.js zu lernen, bauen wir eine Full-Stack Blog-Anwendung. Diese Anwendung ermöglicht es Benutzern, sich zu registrieren, anzumelden und Blog-Beiträge zu erstellen, zu bearbeiten und zu löschen.
 
-## 📋 Prerequisites
+## 📋 Vorraussetzungen für Build
 
-- Docker installed and running
-- Node.js (v16 or higher)
-- npm or yarn package manager
+- Docker installieren
 
-## ⚡ Quick Start
+## ⚡ Schnellstart
 
-### 1. Launch the Application
+### 1. Anwendung starten
 
-Start Docker on your system, then run:
+Docker starten und die Anwendung bauen:
 
 ```bash
 docker-compose up --build
 ```
 
-## 🎨 Frontend Setup
+**Hinweis:** `--build` sorgt dafür, dass die Anwendung neu gebaut wird, falls es Änderungen gibt. Ohne `--build` wird die Anwendung nur gestartet.
 
-### Initial Configuration
+## 🎨 Frontend-Setup
 
-1. **Clean up default files:**
+### Initiale Konfiguration
 
-   - Remove unnecessary styles from `index.css`
-   - Delete `App.css`
-   - Remove `react.svg` and `vite.svg`
+1. **Standarddateien aufräumen:**
+   - Unnötige Styles aus `index.css` entfernen
+   - `App.css` löschen
+   - `react.svg` und `vite.svg` entfernen
 
-2. **Configure App.jsx:**
+2. **App.jsx konfigurieren:**
+   - Standard-HTML-Inhalt leeren
+   - Nicht verwendete JSX-Elemente und Imports entfernen
+   - `index.css` einbinden
 
-   - Clear default HTML content
-   - Remove unused JSX and imports
-   - Link to `index.css`
-
-3. **Install icon dependencies:**
+3. **Icon-Abhängigkeiten installieren:**
    ```bash
    npm install @phosphor-icons/react
    npm install @phosphor-icons/unplugin vite
    ```
 
-## 🔧 Backend Setup
+## 🔧 Backend-Setup
 
-### Database Configuration
+### Datenbankkonfiguration
 
-Start MongoDB container:
+MongoDB-Container starten:
 
 ```bash
 docker run -d --name mongodb -p 27017:27017 mongo
 ```
 
-Info: To remove containers, networks and volumes, run `docker-compose down -v`.
+Hinweis: Um Container, Netzwerke und Volumes zu entfernen, `docker-compose down -v` ausführen.
 
-### Project Initialization
+### Projektinitialisierung
 
-1. **Initialize Node.js project:**
+1. **Node.js-Projekt initialisieren:**
 
    ```bash
    npm init -y
    ```
 
-2. **Configure ES modules:**
-   Add `"type": "module"` to your `package.json`
+2. **ES-Module konfigurieren:**
+   `"type": "module"` zur `package.json` hinzufügen
 
-3. **Install dependencies:**
+3. **Abhängigkeiten installieren:**
    ```bash
    npm install express mongoose bcryptjs jsonwebtoken cors dotenv uuid
    ```

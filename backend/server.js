@@ -50,7 +50,6 @@ const app = express();
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cors({ origin: `http://localhost:${frontendPort}` }));
-app.use(express.json());
 app.use("/images", express.static("/mongo_img"));
 
 // === AUTH ===
@@ -115,9 +114,7 @@ app.post("/posts", verifyToken, async (req, res) => {
 
   try {
     // Convert to PNG using sharp and save
-    await sharp(imageBuffer)
-      .png()
-      .toFile(imagePath);
+    await sharp(imageBuffer).png().toFile(imagePath);
   } catch (err) {
     return res.status(500).json({ error: "Failed to save image." });
   }

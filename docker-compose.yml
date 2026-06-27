@@ -1,13 +1,13 @@
-version: "3"
-
 services:
   mongo:
     image: mongo:8
     ports:
       - "27017:27017"
     volumes:
+      # Run init scripts on first startup to seed the database
       - ./mongo-init:/docker-entrypoint-initdb.d
-      - ./mongo_img:/mongo_img 
+      # Share the image directory with the backend container
+      - ./mongo_img:/mongo_img
 
   backend:
     build: ./backend
@@ -21,20 +21,18 @@ services:
     depends_on:
       - mongo
     volumes:
-      - ./mongo_img:/mongo_img 
+      # Share the image directory so uploaded files persist on the host
+      - ./mongo_img:/mongo_img
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        # VITE_API_URL is embedded into the static files at build time by Vite.
+        # It must be passed as a build argument, not a runtime environment variable,
+        # because Nginx serves static files and cannot inject values at runtime.
+        VITE_API_URL: http://localhost:3000
     ports:
       - "8000:80"
     depends_on:
       - backend
-    environment:
-      - VITE_API_URL=http://localhost:3000
-
-# Volumes section defines named volumes that can be shared between containers
-# and persist data beyond container lifecycle
-volumes:
-  # mongo-data: Persistent volume for MongoDB database files
-  # This ensures database data survives container restarts and removals
-  mongo-data:

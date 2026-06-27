@@ -13,20 +13,44 @@ function Authentication({ setLoggedInUser }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    handleSubmit(e, loginMode, setLoggedInUser, username, password, fullName);
+    handleSubmit(loginMode, setLoggedInUser, username, password, fullName);
   };
 
   return (
     <form id="login-form" onSubmit={onSubmit}>
-      <div id="login-form-switch" onClick={switchLoginMode}>
+      <button id="login-form-switch" type="button" onClick={switchLoginMode}>
         Switch to {loginMode ? "Registration" : "Login"}
-      </div>
+      </button>
 
-      {!loginMode && <input type="text" placeholder="Full Name" required value={fullName} onChange={(e) => setFullName(e.target.value)} />}
+      {!loginMode && (
+        <input
+          type="text"
+          placeholder="Full Name"
+          required
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+        />
+      )}
 
-      <input type="text" placeholder="Username" required minLength="6" maxLength="30" value={username} onChange={(e) => setUsername(e.target.value)} />
+      <input
+        type="text"
+        placeholder="Username"
+        required
+        minLength="6"
+        maxLength="30"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
 
-      <input type="password" placeholder="Password" required minLength="6" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <input
+        type="password"
+        placeholder="Password"
+        required
+        minLength="6"
+        maxLength="30"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
       <button type="submit">{loginMode ? "Login" : "Register"}</button>
     </form>

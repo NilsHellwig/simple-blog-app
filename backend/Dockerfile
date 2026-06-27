@@ -1,20 +1,26 @@
-# Use the official Node.js LTS image
-FROM node:23-alpine
+# Use the current Node.js LTS (Long Term Support) release on Alpine Linux.
+# Alpine is a minimal Linux distribution that keeps the image size small.
+# "lts-alpine" always resolves to the active LTS version, which receives
+# long-term security and bug-fix updates.
+FROM node:lts-alpine
 
-# Set the working directory in the container
+# Set the working directory inside the container.
+# All subsequent commands will run relative to this path.
 WORKDIR /app
 
-# Copy package.json and package-lock.json (if available)
+# Copy only the dependency manifests first.
+# Docker caches each layer — by copying these files before the source code,
+# the npm install layer is only re-executed when dependencies actually change.
 COPY package*.json ./
 
-# Install dependencies
+# Install production dependencies.
 RUN npm install
 
-# Copy the rest of the backend source code
+# Copy the rest of the backend source code into the container.
 COPY . .
 
-# Expose the port on which the backend listens (adjust if necessary)
+# Document that the container listens on port 3000.
 EXPOSE 3000
 
-# Start the backend
+# Start the Node.js server.
 CMD ["node", "server.js"]
