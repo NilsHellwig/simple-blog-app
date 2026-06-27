@@ -69,7 +69,9 @@ app.post("/register", async (req, res) => {
       user: { username: user.username },
     });
   } catch (err) {
-    res.status(400).json({ error: "Username already taken" });
+    // MongoDB error code 11000 means a unique index constraint was violated
+    const message = err.code === 11000 ? "Username already taken" : "Registration failed";
+    res.status(400).json({ error: message });
   }
 });
 
