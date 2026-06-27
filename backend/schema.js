@@ -8,7 +8,6 @@ export const userSchema = new mongoose.Schema({
     minlength: 6,
     maxlength: 30,
   },
-  name: String,
   password: {
     type: String,
     required: true,
@@ -20,7 +19,6 @@ export const postSchema = new mongoose.Schema({
   description: { type: String, required: true },
   author: {
     username: { type: String, required: true },
-    name: String,
   },
   postedAt: Number,
 });

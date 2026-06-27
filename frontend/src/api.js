@@ -27,8 +27,8 @@ const authenticate = async (endpoint, body, setLoggedInUser) => {
 export const login = (username, password, setLoggedInUser) =>
   authenticate("login", { username, password }, setLoggedInUser);
 
-export const register = (username, password, fullName, setLoggedInUser) =>
-  authenticate("register", { username, password, name: fullName }, setLoggedInUser);
+export const register = (username, password, setLoggedInUser) =>
+  authenticate("register", { username, password }, setLoggedInUser);
 
 export const addNewPost = async (newPost, setPosts, setNewPost, fileInputRef) => {
   if (!newPost.title || !newPost.description || !newPost.imageBase64) {

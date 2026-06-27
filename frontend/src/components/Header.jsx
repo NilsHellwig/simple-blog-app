@@ -15,7 +15,7 @@ function Header({ loggedInUser, setLoggedInUser }) {
       </div>
       {loggedInUser && (
         <button id="logout-button" type="button" onClick={handleLogout}>
-          <span>Logout {loggedInUser.name}</span>
+          <span>Logout {loggedInUser.username}</span>
           <SignOutIcon size={24} />
         </button>
       )}

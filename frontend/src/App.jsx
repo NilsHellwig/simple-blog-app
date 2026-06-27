@@ -26,10 +26,7 @@ function App() {
           return;
         }
 
-        setLoggedInUser({
-          username: payload.username,
-          name: payload.name,
-        });
+        setLoggedInUser({ username: payload.username });
       } catch (err) {
         // Token is malformed — discard it
         removeToken();

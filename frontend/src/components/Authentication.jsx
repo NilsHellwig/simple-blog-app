@@ -4,7 +4,6 @@ import { login, register } from "../api";
 function Authentication({ setLoggedInUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
   const [loginMode, setLoginMode] = useState(true);
 
   const onSubmit = (e) => {
@@ -12,7 +11,7 @@ function Authentication({ setLoggedInUser }) {
     if (loginMode) {
       login(username, password, setLoggedInUser);
     } else {
-      register(username, password, fullName, setLoggedInUser);
+      register(username, password, setLoggedInUser);
     }
   };
 
@@ -21,16 +20,6 @@ function Authentication({ setLoggedInUser }) {
       <button id="auth-mode-switch" type="button" onClick={() => setLoginMode((prev) => !prev)}>
         Switch to {loginMode ? "Registration" : "Login"}
       </button>
-
-      {!loginMode && (
-        <input
-          type="text"
-          placeholder="Full Name"
-          required
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-        />
-      )}
 
       <input
         type="text"

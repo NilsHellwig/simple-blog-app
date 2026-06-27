@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import cors from "cors";
 import "dotenv/config";
 import path from "path";
+import { unlink } from "fs/promises";
 import sharp from "sharp";
 
 import { postSchema, userSchema } from "./schema.js";
@@ -57,20 +58,20 @@ app.use("/images", express.static("/mongo_img"));
 
 // === AUTH ===
 app.post("/register", async (req, res) => {
-  const { username, password, name } = req.body;
+  const { username, password } = req.body;
   if (password.length < 6) {
     return res.status(400).json({ error: "Password must be at least 6 characters long" });
   }
   const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
 
   try {
-    const user = await User.create({ username, password: hashedPassword, name });
-    const token = jwt.sign({ username: user.username, name: user.name }, secretKey, {
+    const user = await User.create({ username, password: hashedPassword });
+    const token = jwt.sign({ username: user.username }, secretKey, {
       expiresIn: JWT_EXPIRES_IN,
     });
     res.status(201).json({
       token,
-      user: { username: user.username, name: user.name },
+      user: { username: user.username },
     });
   } catch (err) {
     res.status(400).json({ error: "Username already taken" });
@@ -86,10 +87,10 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ username: user.username, name: user.name }, secretKey, {
+    const token = jwt.sign({ username: user.username }, secretKey, {
       expiresIn: JWT_EXPIRES_IN,
     });
-    res.json({ token, user: { username: user.username, name: user.name } });
+    res.json({ token, user: { username: user.username } });
   } catch (err) {
     res.status(500).json({ error: "Login failed" });
   }
@@ -130,7 +131,6 @@ app.post("/posts", verifyToken, async (req, res) => {
       description,
       author: {
         username: req.user.username,
-        name: req.user.name,
       },
       postedAt: Date.now(),
     });
@@ -156,6 +156,10 @@ app.delete("/posts/:id", verifyToken, async (req, res) => {
     }
 
     await Post.deleteOne({ _id: post._id });
+
+    // Delete the associated image file; ignore the error if it doesn't exist
+    const imagePath = path.join("/mongo_img", `${post._id}.png`);
+    await unlink(imagePath).catch(() => {});
 
     const allPosts = await Post.find().sort({ postedAt: -1 });
     res.status(200).json(allPosts);

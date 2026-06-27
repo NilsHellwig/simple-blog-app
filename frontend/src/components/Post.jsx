@@ -7,9 +7,8 @@ function Post({ post, loggedInUser, onDelete }) {
 
   return (
     <article className="post">
-      <header className="post-header">
+      <div className="post-header">
         <div className="post-author">
-          <div className="post-author-name">{post.author.name}</div>
           <div className="post-author-username gradient-text">@{post.author.username}</div>
         </div>
         {canDelete && (
@@ -18,7 +17,7 @@ function Post({ post, loggedInUser, onDelete }) {
             <TrashIcon size={24} />
           </button>
         )}
-      </header>
+      </div>
       <img
         className="post-image"
         src={`${BACKEND_URL}/images/${post._id}.png`}

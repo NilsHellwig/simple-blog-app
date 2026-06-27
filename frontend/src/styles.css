@@ -27,6 +27,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 12px 0;
   border-bottom: solid 1px var(--gray);
   background-color: var(--lightest);
   z-index: 1000;
@@ -60,6 +61,11 @@ textarea {
   padding: 10px;
   border: solid 1px var(--light);
   border-radius: 6px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
 }
 
 .form-card {
@@ -188,16 +194,14 @@ button[type="submit"]:hover {
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-
-.post-author-name {
-  font-size: 18px;
-  font-weight: 600;
+  min-width: 0;
 }
 
 .post-author-username {
   font-style: italic;
-  width: max-content;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .post-timestamp {

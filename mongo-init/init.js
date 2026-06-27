@@ -9,7 +9,6 @@ db.posts.insertMany([
     postedAt: Date.now() - 2 * 24 * 60 * 60 * 1000,
     author: {
       username: "julian_k",
-      name: "Julian Kraft",
     },
   },
   {
@@ -20,7 +19,6 @@ db.posts.insertMany([
     postedAt: Date.now() - 3 * 60 * 60 * 1000,
     author: {
       username: "sarah_m",
-      name: "Sarah Müller",
     },
   },
 ]);
