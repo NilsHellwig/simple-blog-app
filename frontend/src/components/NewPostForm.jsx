@@ -19,7 +19,7 @@ function NewPostForm({ setPosts }) {
     addNewPost(newPost, setPosts, setNewPost, fileInputRef);
   };
 
-  const uploadImage = (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -50,7 +50,7 @@ function NewPostForm({ setPosts }) {
         id="add-post-form-image"
         type="file"
         accept="image/jpeg,image/png"
-        onChange={uploadImage}
+        onChange={handleImageChange}
         required
       />
       <button type="submit">

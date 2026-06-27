@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { handleSubmit } from "../api";
+import { login, register } from "../api";
 
 function Authentication({ setLoggedInUser }) {
   const [username, setUsername] = useState("");
@@ -9,7 +9,11 @@ function Authentication({ setLoggedInUser }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    handleSubmit(loginMode, setLoggedInUser, username, password, fullName);
+    if (loginMode) {
+      login(username, password, setLoggedInUser);
+    } else {
+      register(username, password, fullName, setLoggedInUser);
+    }
   };
 
   return (

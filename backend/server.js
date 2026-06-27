@@ -10,6 +10,9 @@ import sharp from "sharp";
 
 import { postSchema, userSchema } from "./schema.js";
 
+const BCRYPT_SALT_ROUNDS = 10;
+const JWT_EXPIRES_IN = "3h";
+
 const secretKey = process.env.SECRET_KEY || "SECRET_KEY";
 const frontendPort = process.env.FRONTEND_PORT || 5173;
 
@@ -57,13 +60,13 @@ app.post("/register", async (req, res) => {
   if (password.length < 6) {
     return res.status(400).json({ error: "Password must be at least 6 characters long" });
   }
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
 
   try {
     const user = await User.create({ username, password: hashedPassword, name });
-
-    const token = jwt.sign({ username: user.username, name: user.name }, secretKey, { expiresIn: "3h" });
-
+    const token = jwt.sign({ username: user.username, name: user.name }, secretKey, {
+      expiresIn: JWT_EXPIRES_IN,
+    });
     res.status(201).json({
       token,
       user: { username: user.username, name: user.name },
@@ -74,25 +77,31 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  const user = await User.findOne({ username });
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
 
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).json({ error: "Invalid credentials" });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const token = jwt.sign({ username: user.username, name: user.name }, secretKey, {
+      expiresIn: JWT_EXPIRES_IN,
+    });
+    res.json({ token, user: { username: user.username, name: user.name } });
+  } catch (err) {
+    res.status(500).json({ error: "Login failed" });
   }
-
-  const token = jwt.sign({ username: user.username, name: user.name }, secretKey, { expiresIn: "3h" });
-
-  res.json({
-    token,
-    user: { username: user.username, name: user.name },
-  });
 });
 
 // === POSTS ===
 app.get("/posts", async (req, res) => {
-  const posts = await Post.find().sort({ postedAt: -1 });
-  res.json(posts);
+  try {
+    const posts = await Post.find().sort({ postedAt: -1 });
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to load posts" });
+  }
 });
 
 app.post("/posts", verifyToken, async (req, res) => {
@@ -102,7 +111,9 @@ app.post("/posts", verifyToken, async (req, res) => {
   const match = imageBase64.match(base64Pattern);
 
   if (!match) {
-    return res.status(400).json({ error: "Invalid image format. Only PNG and JPG base64 images are allowed." });
+    return res
+      .status(400)
+      .json({ error: "Invalid image format. Only PNG and JPG base64 images are allowed." });
   }
 
   const base64Data = match[2];
@@ -117,33 +128,41 @@ app.post("/posts", verifyToken, async (req, res) => {
     return res.status(500).json({ error: "Failed to save image." });
   }
 
-  await Post.create({
-    title,
-    description,
-    imageId,
-    author: {
-      username: req.user.username,
-      name: req.user.name,
-    },
-    postedAt: Math.floor(Date.now() / 1000),
-  });
+  try {
+    await Post.create({
+      title,
+      description,
+      imageId,
+      author: {
+        username: req.user.username,
+        name: req.user.name,
+      },
+      postedAt: Date.now(),
+    });
 
-  const allPosts = await Post.find().sort({ postedAt: -1 });
-  res.status(201).json(allPosts);
+    const allPosts = await Post.find().sort({ postedAt: -1 });
+    res.status(201).json(allPosts);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to create post." });
+  }
 });
 
 app.delete("/posts/:id", verifyToken, async (req, res) => {
-  const post = await Post.findById(req.params.id);
-  if (!post) return res.status(404).json({ error: "Not found" });
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ error: "Not found" });
 
-  if (post.author.username !== req.user.username) {
-    return res.status(403).json({ error: "Not authorized" });
+    if (post.author.username !== req.user.username) {
+      return res.status(403).json({ error: "Not authorized" });
+    }
+
+    await Post.deleteOne({ _id: post._id });
+
+    const allPosts = await Post.find().sort({ postedAt: -1 });
+    res.status(200).json(allPosts);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete post." });
   }
-
-  await Post.deleteOne({ _id: post._id });
-
-  const allPosts = await Post.find().sort({ postedAt: -1 }); // optionally sorted
-  res.status(200).json(allPosts);
 });
 
 // === SERVER START ===

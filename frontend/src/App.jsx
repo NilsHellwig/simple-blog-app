@@ -4,13 +4,14 @@ import Header from "./components/Header";
 import NewPostForm from "./components/NewPostForm";
 import Posts from "./components/Posts";
 import Authentication from "./components/Authentication";
+import { getToken, removeToken } from "./token";
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState(undefined);
+  const [loggedInUser, setLoggedInUser] = useState(null);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
 
     if (token) {
       try {
@@ -20,17 +21,16 @@ function App() {
         const isExpired = Date.now() >= payload.exp * 1000;
 
         if (isExpired) {
-          localStorage.removeItem("token");
+          removeToken();
           return;
         }
 
         setLoggedInUser({
-          id: payload.id,
           username: payload.username,
           name: payload.name,
         });
       } catch (err) {
-        localStorage.removeItem("token");
+        removeToken();
       }
     }
   }, []);

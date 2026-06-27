@@ -1,11 +1,9 @@
 import { BACKEND_URL } from "./const";
+import { getToken, setToken } from "./token";
 
-export const handleSubmit = async (loginMode, setLoggedInUser, username, password, fullName) => {
-  const url = `${BACKEND_URL}/${loginMode ? "login" : "register"}`;
-  const body = loginMode ? { username, password } : { username, password, name: fullName };
-
+const authenticate = async (endpoint, body, setLoggedInUser) => {
   try {
-    const res = await fetch(url, {
+    const res = await fetch(`${BACKEND_URL}/${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -18,12 +16,18 @@ export const handleSubmit = async (loginMode, setLoggedInUser, username, passwor
       return;
     }
 
-    localStorage.setItem("token", data.token);
+    setToken(data.token);
     setLoggedInUser(data.user);
   } catch (err) {
     console.error("Server error:", err);
   }
 };
+
+export const login = (username, password, setLoggedInUser) =>
+  authenticate("login", { username, password }, setLoggedInUser);
+
+export const register = (username, password, fullName, setLoggedInUser) =>
+  authenticate("register", { username, password, name: fullName }, setLoggedInUser);
 
 export const addNewPost = async (newPost, setPosts, setNewPost, fileInputRef) => {
   if (!newPost.title || !newPost.description || !newPost.imageBase64) {
@@ -32,13 +36,11 @@ export const addNewPost = async (newPost, setPosts, setNewPost, fileInputRef) =>
   }
 
   try {
-    const token = localStorage.getItem("token");
-
     const response = await fetch(`${BACKEND_URL}/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
       body: JSON.stringify({
         title: newPost.title,
@@ -62,10 +64,9 @@ export const addNewPost = async (newPost, setPosts, setNewPost, fileInputRef) =>
 };
 
 export const loadPosts = async (setPosts) => {
-  const token = localStorage.getItem("token");
   try {
     const res = await fetch(`${BACKEND_URL}/posts`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${getToken()}` },
     });
     const data = await res.json();
     setPosts(data);
@@ -75,11 +76,10 @@ export const loadPosts = async (setPosts) => {
 };
 
 export const deletePost = async (id, setPosts) => {
-  const token = localStorage.getItem("token");
   try {
     const res = await fetch(`${BACKEND_URL}/posts/${id}`, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${getToken()}` },
     });
 
     if (!res.ok) throw new Error("Delete failed");
