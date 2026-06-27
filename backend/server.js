@@ -16,17 +16,12 @@ const JWT_EXPIRES_IN = "3h";
 const secretKey = process.env.SECRET_KEY || "SECRET_KEY";
 const frontendPort = process.env.FRONTEND_PORT || 5173;
 
-/*
-| Part         | Meaning                                                                      |
-| ------------ | ---------------------------------------------------------------------------- |
-| `mongodb://` | Protocol schema – indicates that this is a MongoDB connection               |
-| `localhost`  | Hostname – the MongoDB server runs on the **local machine**                 |
-| `27017`      | Default port – MongoDB listens on port **27017** by default                 |
-| `blogapp`    | Database name – this is the **target database** you want to work with       |
-
-*/
+// mongodb://  — protocol
+// localhost   — hostname of the MongoDB server
+// 27017       — default MongoDB port
+// blogapp     — name of the database to use
 const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/blogapp";
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3335;
 
 // === Models ===
 const User = mongoose.model("User", userSchema);
@@ -62,9 +57,9 @@ app.post("/register", async (req, res) => {
   if (password.length < 6) {
     return res.status(400).json({ error: "Password must be at least 6 characters long" });
   }
-  const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
 
   try {
+    const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
     const user = await User.create({ username, password: hashedPassword });
     const token = jwt.sign({ username: user.username }, secretKey, {
       expiresIn: JWT_EXPIRES_IN,
@@ -97,7 +92,7 @@ app.post("/login", async (req, res) => {
 });
 
 // === POSTS ===
-app.get("/posts", async (req, res) => {
+app.get("/posts", verifyToken, async (req, res) => {
   try {
     const posts = await Post.find().sort({ postedAt: -1 });
     res.json(posts);

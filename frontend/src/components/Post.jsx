@@ -1,5 +1,5 @@
 import { TrashIcon } from "@phosphor-icons/react";
-import { convertUnixToTimestamp } from "../helper";
+import { formatDate } from "../helper";
 import { BACKEND_URL } from "../const";
 
 function Post({ post, loggedInUser, onDelete }) {
@@ -21,11 +21,11 @@ function Post({ post, loggedInUser, onDelete }) {
       <img
         className="post-image"
         src={`${BACKEND_URL}/images/${post._id}.png`}
-        alt="Post Thumbnail"
+        alt={`Image for: ${post.title}`}
       />
       <div className="post-body">
         <h3 className="post-title">{post.title}</h3>
-        <span className="post-timestamp">({convertUnixToTimestamp(post.postedAt)})</span>
+        <span className="post-timestamp">({formatDate(post.postedAt)})</span>
         <p className="post-description">{post.description}</p>
       </div>
     </article>

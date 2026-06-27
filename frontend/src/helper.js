@@ -1,5 +1,5 @@
-export const convertUnixToTimestamp = (unixTimestamp) => {
-  const date = new Date(unixTimestamp);
+export const formatDate = (timestamp) => {
+  const date = new Date(timestamp);
   return date.toLocaleDateString("de-DE", {
     year: "numeric",
     month: "long",

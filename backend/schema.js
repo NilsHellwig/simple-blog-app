@@ -20,5 +20,5 @@ export const postSchema = new mongoose.Schema({
   author: {
     username: { type: String, required: true },
   },
-  postedAt: Number,
+  postedAt: { type: Number, required: true },
 });
