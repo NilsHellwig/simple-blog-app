@@ -47,7 +47,6 @@ const verifyToken = (req, res, next) => {
 // === App Setup ===
 const app = express();
 app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cors({ origin: `http://localhost:${frontendPort}` }));
 app.use("/images", express.static("/mongo_img"));
 
@@ -106,6 +105,10 @@ app.get("/posts", verifyToken, async (req, res) => {
 app.post("/posts", verifyToken, async (req, res) => {
   const { title, description, imageBase64 } = req.body;
 
+  if (!title || !description || !imageBase64) {
+    return res.status(400).json({ error: "Title, description, and image are required." });
+  }
+
   // Validates that the upload is a base64 data URL for a PNG or JPG image
   // and extracts the raw base64 data (group 2) from the "data:image/...;base64,..." prefix
   const base64Pattern = /^data:image\/(png|jpg|jpeg);base64,([A-Za-z0-9+/=]+)$/;
@@ -159,7 +162,7 @@ app.delete("/posts/:id", verifyToken, async (req, res) => {
     await unlink(imagePath).catch(() => {});
 
     const allPosts = await Post.find().sort({ postedAt: -1 });
-    res.status(200).json(allPosts);
+    res.json(allPosts);
   } catch (err) {
     res.status(500).json({ error: "Failed to delete post." });
   }

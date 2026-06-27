@@ -1,6 +1,7 @@
 export const formatDate = (timestamp) => {
   const date = new Date(timestamp);
-  return date.toLocaleDateString("de-DE", {
+  // "de-DE" formats dates in German style, e.g. "27. Juni 2025, 14:32"
+  return date.toLocaleString("de-DE", {
     year: "numeric",
     month: "long",
     day: "numeric",

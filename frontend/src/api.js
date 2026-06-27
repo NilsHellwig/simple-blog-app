@@ -37,7 +37,7 @@ export const addNewPost = async (newPost, setPosts, setNewPost, fileInputRef) =>
   }
 
   try {
-    const response = await fetch(`${BACKEND_URL}/posts`, {
+    const res = await fetch(`${BACKEND_URL}/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -50,12 +50,12 @@ export const addNewPost = async (newPost, setPosts, setNewPost, fileInputRef) =>
       }),
     });
 
-    if (!response.ok) {
-      const err = await response.json();
+    if (!res.ok) {
+      const err = await res.json();
       throw new Error(err.error || "Failed to create post.");
     }
 
-    const updatedPosts = await response.json();
+    const updatedPosts = await res.json();
     setPosts(updatedPosts);
     setNewPost({ title: "", description: "", imageBase64: "" });
     fileInputRef.current.value = "";
