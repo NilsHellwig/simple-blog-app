@@ -22,7 +22,7 @@ COPY . .
 # Declare a build-time argument that can be passed via docker-compose (build.args).
 # ARG values are only available during the image build, not at container runtime.
 # The default value is used when no argument is supplied.
-ARG VITE_API_URL=http://localhost:3000
+ARG VITE_API_URL=http://localhost:3335
 
 # Promote the ARG to an ENV so it is available as an environment variable
 # when the build command runs below. Vite reads VITE_* variables at build time

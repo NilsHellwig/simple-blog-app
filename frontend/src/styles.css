@@ -1,4 +1,3 @@
-/* CSS Custom Properties */
 :root {
   --lightest: #faf9f5;
   --light: #f0eee6;
@@ -13,7 +12,6 @@ body {
   color: var(--dark);
 }
 
-/* Layout Components */
 #app-content {
   display: flex;
   flex-direction: column;
@@ -41,7 +39,6 @@ main {
   margin: 8px;
 }
 
-/* Logo and Branding */
 #logo {
   display: flex;
   align-items: center;
@@ -56,7 +53,6 @@ main {
   -webkit-text-fill-color: transparent;
 }
 
-/* Form Elements */
 input,
 textarea {
   all: unset;
@@ -66,8 +62,7 @@ textarea {
   border-radius: 6px;
 }
 
-#add-post-form,
-#login-form {
+.form-card {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -78,7 +73,6 @@ textarea {
   box-shadow: 2px -3px 7px rgba(0, 0, 0, 0.015);
 }
 
-/* Buttons */
 button[type="submit"] {
   all: unset;
   display: flex;
@@ -119,7 +113,7 @@ button[type="submit"]:hover {
   scale: 1.05;
 }
 
-#login-form-switch {
+#auth-mode-switch {
   all: unset;
   box-sizing: border-box;
   display: flex;
@@ -135,7 +129,7 @@ button[type="submit"]:hover {
   transition: 0.3s ease-in-out;
 }
 
-#login-form-switch:hover {
+#auth-mode-switch:hover {
   background-color: var(--lightest);
   scale: 1.05;
 }
@@ -160,12 +154,6 @@ button[type="submit"]:hover {
   scale: 1.05;
 }
 
-/* Posts */
-
-#no-posts-hint {
-  color: var(--dark);
-}
-
 #posts {
   display: flex;
   flex-direction: column;
@@ -173,6 +161,10 @@ button[type="submit"]:hover {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+#no-posts-hint {
+  color: var(--dark);
 }
 
 .post {

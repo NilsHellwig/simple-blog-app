@@ -1,6 +1,7 @@
 import { BACKEND_URL } from "./const";
 import { getToken, setToken } from "./token";
 
+// Shared implementation for login and register — both send credentials and receive a token
 const authenticate = async (endpoint, body, setLoggedInUser) => {
   try {
     const res = await fetch(`${BACKEND_URL}/${endpoint}`, {

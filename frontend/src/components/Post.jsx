@@ -21,7 +21,7 @@ function Post({ post, loggedInUser, onDelete }) {
       </header>
       <img
         className="post-image"
-        src={`${BACKEND_URL}/images/${post.imageId}.png`}
+        src={`${BACKEND_URL}/images/${post._id}.png`}
         alt="Post Thumbnail"
       />
       <div className="post-body">

@@ -3,6 +3,7 @@ import { loadPosts, deletePost } from "../api";
 import Post from "./Post";
 
 function Posts({ setPosts, posts, loggedInUser }) {
+  // Empty dependency array means this runs once when the component first mounts
   useEffect(() => {
     loadPosts(setPosts);
   }, []);

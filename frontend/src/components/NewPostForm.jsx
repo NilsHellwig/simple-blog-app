@@ -23,6 +23,7 @@ function NewPostForm({ setPosts }) {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
+      // readAsDataURL converts the file to a base64-encoded data URL (e.g. "data:image/png;base64,...")
       reader.onloadend = () => {
         updateNewPost("imageBase64", reader.result);
       };
@@ -31,7 +32,7 @@ function NewPostForm({ setPosts }) {
   };
 
   return (
-    <form id="add-post-form" onSubmit={handleSubmit}>
+    <form className="form-card" onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Title"
@@ -47,7 +48,6 @@ function NewPostForm({ setPosts }) {
       />
       <input
         ref={fileInputRef}
-        id="add-post-form-image"
         type="file"
         accept="image/jpeg,image/png"
         onChange={handleImageChange}

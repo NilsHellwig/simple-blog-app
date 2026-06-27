@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./index.css";
 import Header from "./components/Header";
 import NewPostForm from "./components/NewPostForm";
 import Posts from "./components/Posts";
@@ -15,9 +14,11 @@ function App() {
 
     if (token) {
       try {
+        // JWTs have three Base64-encoded parts separated by dots; the middle one is the payload
         const base64Payload = token.split(".")[1];
         const payload = JSON.parse(atob(base64Payload));
 
+        // JWT exp is in seconds, Date.now() returns milliseconds
         const isExpired = Date.now() >= payload.exp * 1000;
 
         if (isExpired) {
@@ -30,6 +31,7 @@ function App() {
           name: payload.name,
         });
       } catch (err) {
+        // Token is malformed — discard it
         removeToken();
       }
     }

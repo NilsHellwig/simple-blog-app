@@ -17,8 +17,8 @@ function Authentication({ setLoggedInUser }) {
   };
 
   return (
-    <form id="login-form" onSubmit={onSubmit}>
-      <button id="login-form-switch" type="button" onClick={() => setLoginMode((prev) => !prev)}>
+    <form className="form-card" onSubmit={onSubmit}>
+      <button id="auth-mode-switch" type="button" onClick={() => setLoginMode((prev) => !prev)}>
         Switch to {loginMode ? "Registration" : "Login"}
       </button>
 

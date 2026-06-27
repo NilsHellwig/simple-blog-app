@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import cors from "cors";
 import "dotenv/config";
 import path from "path";
-import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
 
 import { postSchema, userSchema } from "./schema.js";
@@ -32,11 +31,13 @@ const port = process.env.PORT || 3000;
 const User = mongoose.model("User", userSchema);
 const Post = mongoose.model("Post", postSchema);
 
-// Middleware for JWT
+// Middleware that protects routes requiring authentication.
+// Expects the header: Authorization: Bearer <token>
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ error: "Token missing" });
 
+  // The header value is "Bearer <token>", so we split on the space and take the second part
   const token = authHeader.split(" ")[1];
   try {
     const decoded = jwt.verify(token, secretKey);
@@ -107,6 +108,8 @@ app.get("/posts", async (req, res) => {
 app.post("/posts", verifyToken, async (req, res) => {
   const { title, description, imageBase64 } = req.body;
 
+  // Validates that the upload is a base64 data URL for a PNG or JPG image
+  // and extracts the raw base64 data (group 2) from the "data:image/...;base64,..." prefix
   const base64Pattern = /^data:image\/(png|jpg|jpeg);base64,([A-Za-z0-9+/=]+)$/;
   const match = imageBase64.match(base64Pattern);
 
@@ -117,28 +120,24 @@ app.post("/posts", verifyToken, async (req, res) => {
   }
 
   const base64Data = match[2];
-  const imageId = uuidv4();
-  const filename = `${imageId}.png`;
-  const imagePath = path.join("/mongo_img", filename);
   const imageBuffer = Buffer.from(base64Data, "base64");
 
   try {
-    await sharp(imageBuffer).png().toFile(imagePath);
-  } catch (err) {
-    return res.status(500).json({ error: "Failed to save image." });
-  }
-
-  try {
-    await Post.create({
+    // The post is created first so MongoDB auto-generates its _id,
+    // which is then used as the image filename to keep them linked
+    const post = await Post.create({
       title,
       description,
-      imageId,
       author: {
         username: req.user.username,
         name: req.user.name,
       },
       postedAt: Date.now(),
     });
+
+    await sharp(imageBuffer)
+      .png()
+      .toFile(path.join("/mongo_img", `${post._id}.png`));
 
     const allPosts = await Post.find().sort({ postedAt: -1 });
     res.status(201).json(allPosts);

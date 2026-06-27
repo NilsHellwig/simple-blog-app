@@ -19,8 +19,8 @@ RUN npm install
 # Copy the rest of the backend source code into the container.
 COPY . .
 
-# Document that the container listens on port 3000.
-EXPOSE 3000
+# Document that the container listens on port 3335.
+EXPOSE 3335
 
 # Start the Node.js server.
 CMD ["node", "server.js"]
