@@ -155,7 +155,7 @@ app.delete("/posts/:id", verifyToken, async (req, res) => {
       return res.status(403).json({ error: "Not authorized" });
     }
 
-    await Post.deleteOne({ _id: post._id });
+    await post.deleteOne();
 
     // Delete the associated image file; ignore the error if it doesn't exist
     const imagePath = path.join("/mongo_img", `${post._id}.png`);

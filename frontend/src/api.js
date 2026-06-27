@@ -30,10 +30,10 @@ export const login = (username, password, setLoggedInUser) =>
 export const register = (username, password, setLoggedInUser) =>
   authenticate("register", { username, password }, setLoggedInUser);
 
-export const addNewPost = async (newPost, setPosts, setNewPost, fileInputRef) => {
+export const addNewPost = async (newPost, setPosts) => {
   if (!newPost.title || !newPost.description || !newPost.imageBase64) {
     alert("Please fill in all fields.");
-    return;
+    return false;
   }
 
   try {
@@ -57,10 +57,10 @@ export const addNewPost = async (newPost, setPosts, setNewPost, fileInputRef) =>
 
     const updatedPosts = await res.json();
     setPosts(updatedPosts);
-    setNewPost({ title: "", description: "", imageBase64: "" });
-    fileInputRef.current.value = "";
+    return true;
   } catch (err) {
     alert("Error: " + err.message);
+    return false;
   }
 };
 

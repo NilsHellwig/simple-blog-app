@@ -14,9 +14,13 @@ function NewPostForm({ setPosts }) {
     setNewPost((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addNewPost(newPost, setPosts, setNewPost, fileInputRef);
+    const success = await addNewPost(newPost, setPosts);
+    if (success) {
+      setNewPost({ title: "", description: "", imageBase64: "" });
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleImageChange = (e) => {
