@@ -25,9 +25,7 @@ export const handleSubmit = async (loginMode, setLoggedInUser, username, passwor
   }
 };
 
-export const addNewPost = async (e, newPost, setPosts, setNewPost, fileInputRef) => {
-  e.preventDefault();
-
+export const addNewPost = async (newPost, setPosts, setNewPost, fileInputRef) => {
   if (!newPost.title || !newPost.description || !newPost.imageBase64) {
     alert("Please fill in all fields.");
     return;
@@ -45,7 +43,7 @@ export const addNewPost = async (e, newPost, setPosts, setNewPost, fileInputRef)
       body: JSON.stringify({
         title: newPost.title,
         description: newPost.description,
-        imageUrl: newPost.imageBase64,
+        imageBase64: newPost.imageBase64,
       }),
     });
 

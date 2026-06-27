@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import "dotenv/config";
-import fs from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
@@ -58,10 +57,10 @@ app.post("/register", async (req, res) => {
   if (password.length < 6) {
     return res.status(400).json({ error: "Password must be at least 6 characters long" });
   }
-  const hashed = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-    const user = await User.create({ username, password: hashed, name });
+    const user = await User.create({ username, password: hashedPassword, name });
 
     const token = jwt.sign({ username: user.username, name: user.name }, secretKey, { expiresIn: "3h" });
 
@@ -69,7 +68,7 @@ app.post("/register", async (req, res) => {
       token,
       user: { username: user.username, name: user.name },
     });
-  } catch (e) {
+  } catch (err) {
     res.status(400).json({ error: "Username already taken" });
   }
 });
@@ -97,23 +96,22 @@ app.get("/posts", async (req, res) => {
 });
 
 app.post("/posts", verifyToken, async (req, res) => {
-  const { title, description, imageUrl } = req.body;
+  const { title, description, imageBase64 } = req.body;
 
   const base64Pattern = /^data:image\/(png|jpg|jpeg);base64,([A-Za-z0-9+/=]+)$/;
-  const match = imageUrl.match(base64Pattern);
+  const match = imageBase64.match(base64Pattern);
 
   if (!match) {
     return res.status(400).json({ error: "Invalid image format. Only PNG and JPG base64 images are allowed." });
   }
 
   const base64Data = match[2];
-  const uuid = uuidv4();
-  const filename = `${uuid}.png`; // Always save as .png
-  const imagePath = path.join("/mongo_img", filename); // In Container
+  const imageId = uuidv4();
+  const filename = `${imageId}.png`;
+  const imagePath = path.join("/mongo_img", filename);
   const imageBuffer = Buffer.from(base64Data, "base64");
 
   try {
-    // Convert to PNG using sharp and save
     await sharp(imageBuffer).png().toFile(imagePath);
   } catch (err) {
     return res.status(500).json({ error: "Failed to save image." });
@@ -122,7 +120,7 @@ app.post("/posts", verifyToken, async (req, res) => {
   await Post.create({
     title,
     description,
-    imageUrl: uuid, // nur UUID in DB
+    imageId,
     author: {
       username: req.user.username,
       name: req.user.name,
@@ -152,6 +150,6 @@ app.delete("/posts/:id", verifyToken, async (req, res) => {
 mongoose
   .connect(mongoUri)
   .then(() => {
-    app.listen(port, () => console.log("Server running on http://localhost:3000"));
+    app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
   })
   .catch((err) => console.error("Error connecting to MongoDB:", err));

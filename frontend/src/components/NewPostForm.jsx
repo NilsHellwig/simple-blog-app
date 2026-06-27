@@ -2,7 +2,7 @@ import { ChatCircleIcon } from "@phosphor-icons/react";
 import { useRef, useState } from "react";
 import { addNewPost } from "../api";
 
-function NewPostForm({ posts, setPosts }) {
+function NewPostForm({ setPosts }) {
   const fileInputRef = useRef();
   const [newPost, setNewPost] = useState({
     title: "",
@@ -11,7 +11,12 @@ function NewPostForm({ posts, setPosts }) {
   });
 
   const updateNewPost = (key, value) => {
-    setNewPost({ ...newPost, [key]: value });
+    setNewPost((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addNewPost(newPost, setPosts, setNewPost, fileInputRef);
   };
 
   const uploadImage = (e) => {
@@ -26,12 +31,7 @@ function NewPostForm({ posts, setPosts }) {
   };
 
   return (
-    <form
-      id="add-post-form"
-      onSubmit={(e) => {
-        addNewPost(e, newPost, setPosts, setNewPost, fileInputRef);
-      }}
-    >
+    <form id="add-post-form" onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Title"

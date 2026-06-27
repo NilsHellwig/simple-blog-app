@@ -41,7 +41,7 @@ function App() {
       {loggedInUser ? (
         <main>
           <h2>Add Post</h2>
-          <NewPostForm posts={posts} setPosts={setPosts} />
+          <NewPostForm setPosts={setPosts} />
           <h2>Latest Posts</h2>
           <Posts setPosts={setPosts} posts={posts} loggedInUser={loggedInUser} />
         </main>
