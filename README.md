@@ -54,39 +54,6 @@ Das `-v` entfernt das Datenbank-Volume, sodass die Init-Scripts beim nächsten S
    npm install @phosphor-icons/unplugin vite
    ```
 
-### Prettier einrichten
-
-1. **Prettier installieren:**
-
-   ```bash
-   npm install --save-dev prettier
-   ```
-
-2. **`.prettierrc` erstellen** (im `frontend/`-Verzeichnis):
-
-   ```json
-   {
-     "semi": true,
-     "singleQuote": false,
-     "tabWidth": 2,
-     "trailingComma": "es5",
-     "printWidth": 100
-   }
-   ```
-
-3. **Format-Script in `package.json` ergänzen:**
-
-   ```json
-   "scripts": {
-     "format": "prettier --write ."
-   }
-   ```
-
-4. **Code formatieren:**
-   ```bash
-   npm run format
-   ```
-
 ## 🔧 Backend-Setup
 
 ### Datenbankkonfiguration
@@ -115,7 +82,9 @@ Hinweis: Um Container, Netzwerke und Volumes zu entfernen, `docker compose down 
    npm install express mongoose bcryptjs jsonwebtoken cors dotenv sharp
    ```
 
-### Prettier einrichten
+## 🎨 Prettier einrichten
+
+Gilt jeweils für `frontend/` und `backend/`:
 
 1. **Prettier installieren:**
 
@@ -123,7 +92,17 @@ Hinweis: Um Container, Netzwerke und Volumes zu entfernen, `docker compose down 
    npm install --save-dev prettier
    ```
 
-2. **`.prettierrc` erstellen** (im `backend/`-Verzeichnis) mit denselben Einstellungen wie im Frontend.
+2. **`.prettierrc` erstellen:**
+
+   ```json
+   {
+     "semi": true,
+     "singleQuote": false,
+     "tabWidth": 2,
+     "trailingComma": "es5",
+     "printWidth": 100
+   }
+   ```
 
 3. **Format-Script in `package.json` ergänzen:**
 
