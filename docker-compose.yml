@@ -6,8 +6,6 @@ services:
     volumes:
       # Run init scripts on first startup to seed the database
       - ./mongo-init:/docker-entrypoint-initdb.d
-      # Share the image directory with the backend container
-      - ./mongo_img:/mongo_img
       # Persist database files across container restarts
       - mongo-data:/data/db
 
