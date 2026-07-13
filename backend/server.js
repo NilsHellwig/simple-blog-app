@@ -48,7 +48,7 @@ const verifyToken = (req, res, next) => {
 const app = express();
 app.use(express.json({ limit: "10mb" }));
 app.use(cors({ origin: `http://localhost:${frontendPort}` }));
-app.use("/images", express.static("/mongo_img"));
+app.use("/images", express.static("/post_images"));
 
 // === AUTH ===
 app.post("/register", async (req, res) => {
@@ -137,7 +137,7 @@ app.post("/posts", verifyToken, async (req, res) => {
 
     await sharp(imageBuffer)
       .png()
-      .toFile(path.join("/mongo_img", `${post._id}.png`));
+      .toFile(path.join("/post_images", `${post._id}.png`));
 
     const allPosts = await Post.find().sort({ postedAt: -1 });
     res.status(201).json(allPosts);
@@ -158,7 +158,7 @@ app.delete("/posts/:id", verifyToken, async (req, res) => {
     await post.deleteOne();
 
     // Delete the associated image file; ignore the error if it doesn't exist
-    const imagePath = path.join("/mongo_img", `${post._id}.png`);
+    const imagePath = path.join("/post_images", `${post._id}.png`);
     await unlink(imagePath).catch(() => {});
 
     const allPosts = await Post.find().sort({ postedAt: -1 });

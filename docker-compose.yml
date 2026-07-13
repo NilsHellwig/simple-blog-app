@@ -22,15 +22,28 @@ services:
       - mongo
     volumes:
       # Share the image directory so uploaded files persist on the host
-      - ./mongo_img:/mongo_img
+      - ./post_images:/post_images
 
   frontend:
     build:
       context: ./frontend
+      # "args" passes build-time variables into the Dockerfile's build stage.
+      # Unlike the "environment" key (used by the backend service below), these
+      # values only exist while the image is being built — they are not available
+      # inside the running container, and changing them requires a rebuild.
       args:
         # VITE_API_URL is embedded into the static files at build time by Vite.
         # It must be passed as a build argument, not a runtime environment variable,
         # because Nginx serves static files and cannot inject values at runtime.
+        #
+        # How it flows through:
+        # 1. docker-compose passes this value as a build arg to the frontend image.
+        # 2. frontend/Dockerfile declares "ARG VITE_API_URL=..." to receive it, then
+        #    "ENV VITE_API_URL=$VITE_API_URL" to expose it as an env var for the build.
+        # 3. "RUN npm run build" runs Vite, which reads VITE_* env vars and inlines
+        #    their values directly into the compiled JS/CSS output in /dist.
+        # 4. The Nginx stage only serves those static files, so at container
+        #    runtime there is no env var left to change — it's baked into the code.
         VITE_API_URL: http://localhost:3335
     ports:
       - "8889:80"
