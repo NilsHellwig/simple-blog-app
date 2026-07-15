@@ -9,6 +9,7 @@ import { unlink } from "fs/promises";
 import sharp from "sharp";
 
 import { postSchema, userSchema } from "./schema.js";
+import { suggestPostContent } from "./ai.js";
 
 const BCRYPT_SALT_ROUNDS = 10;
 const JWT_EXPIRES_IN = "3h";
@@ -92,6 +93,22 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// === AI ===
+app.post("/ai/suggest-description", verifyToken, async (req, res) => {
+  const { title } = req.body;
+  if (!title) {
+    return res.status(400).json({ error: "Title is required." });
+  }
+
+  try {
+    const suggestion = await suggestPostContent(title);
+    res.json(suggestion);
+  } catch (err) {
+    console.error("AI suggestion failed:", err);
+    res.status(502).json({ error: "AI suggestion is currently unavailable." });
+  }
+});
+
 // === POSTS ===
 app.get("/posts", verifyToken, async (req, res) => {
   try {
@@ -103,7 +120,7 @@ app.get("/posts", verifyToken, async (req, res) => {
 });
 
 app.post("/posts", verifyToken, async (req, res) => {
-  const { title, description, imageBase64 } = req.body;
+  const { title, description, imageBase64, tags } = req.body;
 
   if (!title || !description || !imageBase64) {
     return res.status(400).json({ error: "Title, description, and image are required." });
@@ -129,6 +146,7 @@ app.post("/posts", verifyToken, async (req, res) => {
     const post = await Post.create({
       title,
       description,
+      tags: Array.isArray(tags) ? tags : [],
       author: {
         username: req.user.username,
       },

@@ -17,6 +17,7 @@ export const userSchema = new mongoose.Schema({
 export const postSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
+  tags: { type: [String], default: [] },
   author: {
     username: { type: String, required: true },
   },

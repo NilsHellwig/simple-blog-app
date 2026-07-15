@@ -18,11 +18,17 @@ services:
       - FRONTEND_PORT=8889
       - PORT=3335
       - SECRET_KEY=MY_SECRET_KEY
+      # host.docker.internal lets the container reach Ollama running on the host machine
+      - OLLAMA_HOST=http://host.docker.internal:11434
+      - OLLAMA_MODEL=gemma3:4b
     depends_on:
       - mongo
     volumes:
       # Share the image directory so uploaded files persist on the host
       - ./post_images:/post_images
+    extra_hosts:
+      # Makes host.docker.internal resolve on Linux too (Docker Desktop already provides it)
+      - "host.docker.internal:host-gateway"
 
   frontend:
     build:

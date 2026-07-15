@@ -27,6 +27,13 @@ function Post({ post, loggedInUser, onDelete }) {
         <h3 className="post-title">{post.title}</h3>
         <span className="post-timestamp">({formatDate(post.postedAt)})</span>
         <p className="post-description">{post.description}</p>
+        {post.tags?.length > 0 && (
+          <ul className="tag-list">
+            {post.tags.map((tag) => (
+              <li key={tag}>#{tag}</li>
+            ))}
+          </ul>
+        )}
       </div>
     </article>
   );

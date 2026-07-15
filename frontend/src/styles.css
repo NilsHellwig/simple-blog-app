@@ -101,6 +101,79 @@ button[type="submit"]:hover {
   color: white;
 }
 
+#ai-suggest-button {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  color: var(--brick);
+  border: solid 1px var(--brick);
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+#ai-suggest-button:hover:not(:disabled) {
+  scale: 1.05;
+  background-color: var(--brick);
+  color: white;
+}
+
+#ai-suggest-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tag-list li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--light);
+  color: var(--dark);
+  font-size: 14px;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+#tag-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#tag-editor .tag-list li span {
+  cursor: pointer;
+}
+
+.tag-remove-button {
+  all: unset;
+  display: flex;
+  cursor: pointer;
+  color: var(--dark);
+}
+
+.tag-remove-button:hover {
+  color: var(--brick);
+}
+
+.tag-edit-input {
+  all: unset;
+  font-size: 14px;
+  min-width: 60px;
+  border-bottom: solid 1px var(--brick);
+}
+
 #logout-button {
   all: unset;
   box-sizing: border-box;

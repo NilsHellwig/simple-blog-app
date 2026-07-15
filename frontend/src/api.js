@@ -47,6 +47,7 @@ export const addNewPost = async (newPost, setPosts) => {
         title: newPost.title,
         description: newPost.description,
         imageBase64: newPost.imageBase64,
+        tags: newPost.tags,
       }),
     });
 
@@ -61,6 +62,29 @@ export const addNewPost = async (newPost, setPosts) => {
   } catch (err) {
     alert("Error: " + err.message);
     return false;
+  }
+};
+
+export const suggestPostContent = async (title) => {
+  try {
+    const res = await fetch(`${BACKEND_URL}/ai/suggest-description`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify({ title }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || "Failed to generate suggestion.");
+    }
+
+    return await res.json();
+  } catch (err) {
+    alert("Error: " + err.message);
+    return null;
   }
 };
 
